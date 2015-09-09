@@ -32,6 +32,9 @@ public class SimpleCORSFilter implements Filter {
 		String auth = request.getHeader("Authorization");
 
 		System.err.println(auth);
+		System.err.println(request.getRequestURI());//访问路径，用来安全认证用
+		//需要判断是否登录用的webservice，这个是不需要安全认证的
+		//建议加个单独的path的webservice用来验证登录，不要用/user
 		// TODO
 		// 判断传送过来的用户名和密码是否符合数据中的
 		// 1.符合，则
@@ -52,5 +55,33 @@ public class SimpleCORSFilter implements Filter {
 
 	public void destroy() {
 	}
+	//定义filter的优先级
+//	建议用打印1和2来看下实际效果
+	/*******************************
+	 * @Configuration
+@EnableAutoConfiguration
+@EnableWebMvc
+@ComponentScan
+public class Application {
+
+    @Bean
+    public FilterRegistrationBean filterRegistrationBean() {
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+        SecurityFilter securityFilter = new SecurityFilter();
+        registrationBean.setFilter(securityFilter);
+        registrationBean.setOrder(2);
+        return registrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean contextFilterRegistrationBean() {
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+        RequestContextFilter contextFilter = new RequestContextFilter();
+        registrationBean.setFilter(contextFilter);
+        registrationBean.setOrder(1);
+        return registrationBean;
+    }
+}
+	 */
 
 }
