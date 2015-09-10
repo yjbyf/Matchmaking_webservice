@@ -10,6 +10,8 @@ import com.baiyufan.utils.Constants;
 
 @Configuration
 public class BeanConfig {
+	//@Autowired
+	//private Filter securityFilter;
 	//定义filter的优先级
 	@Bean
     public FilterRegistrationBean filterRegistrationBean() {
