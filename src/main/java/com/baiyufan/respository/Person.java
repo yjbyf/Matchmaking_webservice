@@ -1,4 +1,4 @@
-package com.baiyufan.system;
+package com.baiyufan.respository;
 
 import org.springframework.data.annotation.Id;
 
