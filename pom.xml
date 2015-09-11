@@ -26,6 +26,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
         </dependency>
+        <dependency>
+			<groupId>com.hp.hpl.jena</groupId>
+			<artifactId>json-jena</artifactId>
+			<version>1.0</version>
+		</dependency>
     </dependencies>
 
     <build>

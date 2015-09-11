@@ -22,7 +22,7 @@ public class loginController {
 		
 		for (User user : repository.findByUserName(userName)) {
 			if(password.equals(user.getPassword())){
-				return "{\"result\":\"success\"}";
+				return "{\"result\":\""+user.getId()+"\"}";
 			}
 			//System.out.println(customer);
 		}
