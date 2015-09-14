@@ -19,6 +19,7 @@ public class BeanConfig {
         RestSecurityFilter securityFilter = new RestSecurityFilter();
         registrationBean.setFilter(securityFilter);
         registrationBean.addUrlPatterns("/"+Constants.USER_REST_WEBSERVICE_PATH+"/*");
+        registrationBean.addUrlPatterns("/"+Constants.PERSON_REST_WEBSERVICE_PATH+"/*");
         registrationBean.setOrder(2);
         return registrationBean;
     }

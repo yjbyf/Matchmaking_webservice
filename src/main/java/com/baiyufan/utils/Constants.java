@@ -19,7 +19,11 @@ public class Constants {
 	
 	public final static String USER_REST_WEBSERVICE_CHANGE_PASSWORD = USER_REST_WEBSERVICE_PATH + SLASH + "changePassword";
 	
+	public final static String PERSON_REST_WEBSERVICE_PATH = "person";
+	
 	public final static String ADMIN = "admin";
+	
+	public final static String ADMIN_INIT_PASSWORD = "21232f297a57a5a743894a0e4a801fc3";
 	
 	public final static String JSON_RESULT_SUCESS = "{\"result\":\"success\"}";
 	public final static String JSON_RESULT_FAILED = "{\"result\":\"failed\"}";

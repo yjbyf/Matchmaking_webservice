@@ -20,11 +20,21 @@ public class loginController {
 			@RequestParam(value = "userName", defaultValue = "") String userName,
 			@RequestParam(value = "password", defaultValue = "") String password) {
 		
+		int count =0;
 		for (User user : repository.findByUserName(userName)) {
+			count ++;
 			if(password.equals(user.getPassword())){
 				return "{\"result\":\""+user.getId()+"\"}";
 			}
 			//System.out.println(customer);
+		}
+		
+		//若用户表中无超级用户，则初始化一个
+		if(count==0&&Constants.ADMIN.equals(userName)&&Constants.ADMIN_INIT_PASSWORD.equals(password)){
+			User user = new User();
+			user.setUserName(Constants.ADMIN);
+			user.setPassword(Constants.ADMIN_INIT_PASSWORD);
+			repository.insert(user);
 		}
 		return "{\"result\":\"failed\"}";
 	}
