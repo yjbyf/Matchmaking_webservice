@@ -9,10 +9,9 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import com.baiyufan.utils.Constants;
 
-@RepositoryRestResource(collectionResourceRel = Constants.USER_REST_WEBSERVICE_PATH, path = Constants.USER_REST_WEBSERVICE_PATH)
-public interface UserRepository extends MongoRepository<User, String> {
+@RepositoryRestResource(collectionResourceRel = Constants.CONTACT_REST_WEBSERVICE_PATH, path = Constants.CONTACT_REST_WEBSERVICE_PATH)
+public interface ContactRepository extends MongoRepository<Contact, String> {
 
-	List<User> findByUserName(@Param("name") String name);
-	List<User> findById(@Param("id") String id);
+	//List<User> findByUserName(@Param("name") String name);
 
 }

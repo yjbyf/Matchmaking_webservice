@@ -99,7 +99,7 @@ public class UserController {
 				}
 			}
 		}
-		System.out.println(sb.toString());
+		//System.out.println(sb.toString());
 		try {
 			JSONObject json = new JSONObject(sb.toString());
 			userNameFromInput = json.getString("userName");
