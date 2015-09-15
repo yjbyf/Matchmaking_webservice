@@ -52,7 +52,7 @@ public class ContactController {
 			System.err.println("userID:"+user.get(0).getId());
 			//DBRef dbref = new DBRef(null,"user",user.getId());	
 			Contact contact = new Contact();
-			contact.setContacter(user.get(0));
+			contact.setContacter(user.get(0)); //放入的是整个对象，不是refdb
 			contactRepository.insert(contact);
 		}
 		return Constants.JSON_RESULT_SUCESS;
