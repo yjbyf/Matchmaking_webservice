@@ -21,7 +21,7 @@ import com.baiyufan.utils.Constants;
 import com.baiyufan.utils.RequestUtils;
 
 @RestController
-public class ContactController {
+public class TestController {
 	
 	private static final String USER_ID = "55f00be87639b6b061dd8cc2";
 	

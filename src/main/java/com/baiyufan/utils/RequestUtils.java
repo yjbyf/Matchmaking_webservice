@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class RequestUtils {
@@ -38,7 +39,7 @@ public class RequestUtils {
 		String username = authParts[0];
 		return username;
 	}
-	
+
 	public static String getPasswordFromRequestAuthorization(
 			HttpServletRequest request) {
 		String[] authParts = getStringArrayFromRequestAuthorization(request);
@@ -48,19 +49,21 @@ public class RequestUtils {
 		String password = authParts[1];
 		return password;
 	}
-	
-	public static JSONObject getJSONObjectFromRequest(HttpServletRequest request){
+
+	public static String getStringFromRequest(HttpServletRequest request) {
 		StringBuilder sb = new StringBuilder();
 		BufferedReader reader = null;
+
 		try {
 			reader = request.getReader();
 			String line;
 			while ((line = reader.readLine()) != null) {
-				sb.append(line).append('\n');
+				sb.append(line);// .append('\n');
 			}
-			JSONObject json = new JSONObject(sb.toString());
-			return json;
-		} catch (Exception e) {
+			return sb.toString();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			if (reader != null) {
@@ -73,7 +76,24 @@ public class RequestUtils {
 			}
 		}
 		return null;
-		
+
+	}
+
+	public static JSONObject getJSONObjectFromRequest(HttpServletRequest request) {
+		String jsonStr = getStringFromRequest(request);
+		if (jsonStr != null && jsonStr.length() > 0) {
+			JSONObject json;
+			try {
+				json = new JSONObject(jsonStr);
+				return json;
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+		return null;
+
 	}
 
 }

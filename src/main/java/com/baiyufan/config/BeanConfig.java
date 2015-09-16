@@ -21,6 +21,7 @@ public class BeanConfig {
         registrationBean.addUrlPatterns("/"+Constants.USER_REST_WEBSERVICE_PATH+"/*");
         registrationBean.addUrlPatterns("/"+Constants.PERSON_REST_WEBSERVICE_PATH+"/*");
         registrationBean.addUrlPatterns("/"+Constants.EMPLOYEE_REST_WEBSERVICE_PATH+"/*");
+        registrationBean.addUrlPatterns("/"+Constants.CONTRACT_REST_WEBSERVICE_PATH+"/*");
         registrationBean.setOrder(2);
         return registrationBean;
     }
