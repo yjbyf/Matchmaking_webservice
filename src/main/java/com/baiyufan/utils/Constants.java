@@ -23,6 +23,10 @@ public class Constants {
 	
 	public final static String CONTACT_REST_WEBSERVICE_PATH = "contact";
 	
+	public final static String EMPLOYEE_REST_WEBSERVICE_PATH = "employee";
+	
+	public final static String EMPLOYEE_REST_WEBSERVICE_PATH_PRE_WTIH_SLASH = SLASH + EMPLOYEE_REST_WEBSERVICE_PATH;
+	
 	public final static String ADMIN = "admin";
 	
 	public final static String ADMIN_INIT_PASSWORD = "21232f297a57a5a743894a0e4a801fc3";
