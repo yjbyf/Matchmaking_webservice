@@ -6,7 +6,6 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 public class RequestUtils {
 	public static String[] getStringArrayFromRequestAuthorization(
@@ -79,12 +78,12 @@ public class RequestUtils {
 
 	}
 
-	public static JSONObject getJSONObjectFromRequest(HttpServletRequest request) {
+	public static JSONUtils getJSONObjectFromRequest(HttpServletRequest request) {
 		String jsonStr = getStringFromRequest(request);
 		if (jsonStr != null && jsonStr.length() > 0) {
-			JSONObject json;
+			JSONUtils json;
 			try {
-				json = new JSONObject(jsonStr);
+				json = new JSONUtils(jsonStr);
 				return json;
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block

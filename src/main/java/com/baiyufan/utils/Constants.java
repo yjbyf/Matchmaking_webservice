@@ -5,6 +5,9 @@ public class Constants {
 
 	public final static String LOGIN_VALID = "loginValid";
 
+	public final static String VALID_FLAG = "1";
+	public final static String INVALID_FLAG = "0";
+	
 	public final static String LOGIN_VALID_PRE_WITH_SLASH = SLASH + LOGIN_VALID;
 
 	public final static String CHANGE_OWN_PASSWORD = SLASH

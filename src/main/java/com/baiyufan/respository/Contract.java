@@ -10,12 +10,16 @@ public class Contract {
 
 	// 合同管理
 	// 合同号
-	private String NO;
+	private String no;
+
 	// 姓名
 	// 性别
 	@DBRef
 	private Person person;
 	private Person personInfo;
+	private String personId;
+	private String name;
+	private String gender;
 	// 收费
 	private float fee;
 	// 服务次数
@@ -25,13 +29,13 @@ public class Contract {
 	private Employee checker;
 	private Employee checkerInfo;
 	// 发票号
-	private String VatNO;
+	private String vatNO;
 	// 合同开始日期
 	private String startDate;
 	// 合同结束日期
 	private String endDate;
-	
-	private String aliveFlag; //有效标记
+
+	private String aliveFlag; // 有效标记
 
 	// 如果合同结束日期小于当天日期归档到历史数据
 	// 功能 新增 修改 删除（管理员有权限） 查询
@@ -52,12 +56,12 @@ public class Contract {
 		this.pk = pk;
 	}
 
-	public String getNO() {
-		return NO;
+	public String getNo() {
+		return no;
 	}
 
-	public void setNO(String nO) {
-		NO = nO;
+	public void setNo(String no) {
+		no = no;
 	}
 
 	public Person getPerson() {
@@ -93,11 +97,11 @@ public class Contract {
 	}
 
 	public String getVatNO() {
-		return VatNO;
+		return vatNO;
 	}
 
 	public void setVatNO(String vatNO) {
-		VatNO = vatNO;
+		vatNO = vatNO;
 	}
 
 	public String getStartDate() {
@@ -138,6 +142,27 @@ public class Contract {
 
 	public void setAliveFlag(String aliveFlag) {
 		this.aliveFlag = aliveFlag;
+	}
+
+	public String getPersonId() {
+		if (this.person != null) {
+			return person.getId();
+		}
+		return "";
+	}
+
+	public String getName() {
+		if (this.person != null) {
+			return person.getName();
+		}
+		return "";
+	}
+
+	public String getGender() {
+		if (this.person != null) {
+			return person.getGender();
+		}
+		return "";
 	}
 
 }
