@@ -79,31 +79,14 @@ public class UserController {
 		// http头中的用户名和密码（是实际操作人的）
 		String userNameFromInput = null;
 		String passwordFromInput = null;
-		StringBuilder sb = new StringBuilder();
-		BufferedReader reader = null;
-		try {
-			reader = request.getReader();
-			String line;
-			while ((line = reader.readLine()) != null) {
-				sb.append(line).append('\n');
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (reader != null) {
-				try {
-					reader.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
+		
 		//System.out.println(sb.toString());
+		JSONObject json = RequestUtils.getJSONObjectFromRequest(request);
 		try {
-			JSONObject json = new JSONObject(sb.toString());
-			userNameFromInput = json.getString("userName");
-			passwordFromInput = json.getString("password");
+			if(json!=null){
+				userNameFromInput = json.getString("userName");
+				passwordFromInput = json.getString("password");
+			}
 			//System.err.println(userNameFromInput);
 			//System.err.println(passwordFromInput);
 		} catch (JSONException e) {

@@ -1,6 +1,11 @@
 package com.baiyufan.utils;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
+
+import org.json.JSONObject;
 
 public class RequestUtils {
 	public static String[] getStringArrayFromRequestAuthorization(
@@ -42,6 +47,33 @@ public class RequestUtils {
 		}
 		String password = authParts[1];
 		return password;
+	}
+	
+	public static JSONObject getJSONObjectFromRequest(HttpServletRequest request){
+		StringBuilder sb = new StringBuilder();
+		BufferedReader reader = null;
+		try {
+			reader = request.getReader();
+			String line;
+			while ((line = reader.readLine()) != null) {
+				sb.append(line).append('\n');
+			}
+			JSONObject json = new JSONObject(sb.toString());
+			return json;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return null;
+		
 	}
 
 }

@@ -6,99 +6,51 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 public class Contact {
-	
-	@Id private String id;
-	
 
-	private String pk;
-	public String getPk() {
-		return id;
-	}
+	@Id
+	private String id;
+	private String pk;// json返回id用，实现方式见get方法
 
+	@DBRef
+	private User contacter; // 用来保存实际内容
+	private User contacterDetail; // json中显示dbref的具体内容，实现方式见get方法
+	@DBRef
+	private List<User> contactee; // 实际保存用字段
+	private List<User> contacteeDetail;// json中显示dbref的具体内容，实现方式见get方法
 
-
-	//@DBRef
-	private User contacter; 
-	
-//	private List<String> contacteeName;
-//	
-//	public List<String> getContacteeName() {
-//		List<String> names = new ArrayList<String>();
-//		names.add("aaa");
-//		names.add("bbb");
-//		return names;
-//	}
-
-	
-	public void setContacter(User contacter) {
-		this.contacter = contacter;
-	}
-
-
-
-	private List<User> contactee;
-	/*
-	private List<String> contacterName;
-	
-	
-
-	private List<String> contacteeName;
-	
-	public void setContacterName(List<String> contacterName) {
-		this.contacterName = contacterName;
-	}
-
-
-
-	public void setContacteeName(List<String> contacteeName) {
-		this.contacteeName = contacteeName;
-	}
-	public List<String> getContacteeName() {
-		if(contactee!=null){
-			List<String> list = new ArrayList<String>();
-			for(User user :contacter){
-				list.add(user.getUserName());
-			}
-			return list;
-		}
-		return contacteeName;
-	}
-
-	
-
-	public List<String>  getContacterName() {
-		return contacterName;
-	}*/
-
-	
-	public List<User> getContactee() {
-		return contactee;
-	}
-
-	
-
+	/************************* get method start ***************************/
 	public String getId() {
 		return id;
 	}
 
-	
+	public String getPk() {
+		return id;
+	}
 
 	public User getContacter() {
 		return contacter;
 	}
 
-	
+	public User getContacterDetail() {
+		return contacter;
+	}
 
-//	public void setContacteeName(List<String> contacteeName) {
-//		this.contacteeName = contacteeName;
-//	}
+	public List<User> getContactee() {
+		return contactee;
+	}
 
+	public List<User> getContacteeDetail() {
+		return contactee;
+	}
 
+	/************************* get method end ***************************/
+	// ///////////////////set method start/////////////////////////////
+	public void setContacter(User contacter) {
+		this.contacter = contacter;
+	}
 
-	
-
-	
-
-
-	 
+	public void setContactee(List<User> contactee) {
+		this.contactee = contactee;
+	}
+	// ///////////////////set method end/////////////////////////////
 }
