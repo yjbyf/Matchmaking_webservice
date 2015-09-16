@@ -30,6 +30,8 @@ public class Contract {
 	private String startDate;
 	// 合同结束日期
 	private String endDate;
+	
+	private String aliveFlag; //有效标记
 
 	// 如果合同结束日期小于当天日期归档到历史数据
 	// 功能 新增 修改 删除（管理员有权限） 查询
@@ -128,6 +130,14 @@ public class Contract {
 
 	public void setCheckerInfo(Employee checkerInfo) {
 		this.checkerInfo = checkerInfo;
+	}
+
+	public String getAliveFlag() {
+		return aliveFlag;
+	}
+
+	public void setAliveFlag(String aliveFlag) {
+		this.aliveFlag = aliveFlag;
 	}
 
 }
