@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 public class Contract {
 	@Id
 	private String id;
-	private String pk;// json返回id用，实现方式见get方法
+	private String pk;//add// json返回id用，实现方式见get方法
 
 	// 合同管理
 	// 合同号
@@ -16,19 +16,19 @@ public class Contract {
 	// 性别
 	@DBRef
 	private Person person;
-	private Person personInfo;
-	private String personId;
-	private String name;
-	private String gender;
+	private Person personInfo;//add
+	private String personId;//add
+	private String name;//add
+	private String gender;//add
 	// 收费
 	private float fee;
 	// 服务次数
-	private int serviceTimes;
+	private float serviceTimes;
 	// 买单老师
 	@DBRef
 	private User checker;
-	private User checkerInfo;
-	private String checkerName;
+	private User checkerInfo;//add
+	private String checkerName;//add
 	// 发票号
 	private String vatNO;
 	// 合同开始日期
@@ -81,11 +81,11 @@ public class Contract {
 		this.fee = fee;
 	}
 
-	public int getServiceTimes() {
+	public float getServiceTimes() {
 		return serviceTimes;
 	}
 
-	public void setServiceTimes(int serviceTimes) {
+	public void setServiceTimes(float serviceTimes) {
 		this.serviceTimes = serviceTimes;
 	}
 
