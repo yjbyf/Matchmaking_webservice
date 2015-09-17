@@ -10,30 +10,34 @@ import com.baiyufan.respository.UserRepository;
 import com.baiyufan.utils.Constants;
 
 @RestController
-public class loginController {
+public class LoginController {
 
 	@Autowired
 	private UserRepository repository;
-	
+
 	@RequestMapping(Constants.LOGIN_VALID_PRE_WITH_SLASH)
 	public String validLogin(
 			@RequestParam(value = "userName", defaultValue = "") String userName,
 			@RequestParam(value = "password", defaultValue = "") String password) {
-		
-		int count =0;
+
+		int count = 0;
 		for (User user : repository.findByUserName(userName)) {
-			count ++;
-			if(password.equals(user.getPassword())){
-				return "{\"result\":\""+user.getId()+"\"}";
+			count++;
+			if (password.equals(user.getPassword())
+					&& Constants.VALID_FLAG.equals(user.getAliveFlag())) {
+				return "{\"result\":\"" + user.getId() + "\"}";
 			}
-			//System.out.println(customer);
+			// System.out.println(customer);
 		}
-		
-		//若用户表中无超级用户，则初始化一个
-		if(count==0&&Constants.ADMIN.equals(userName)&&Constants.ADMIN_INIT_PASSWORD.equals(password)){
+
+		// 若用户表中无超级用户，则初始化一个
+		if (count == 0 && Constants.ADMIN.equals(userName)
+				&& Constants.ADMIN_INIT_PASSWORD.equals(password)) {
 			User user = new User();
 			user.setUserName(Constants.ADMIN);
+			user.setStaff(Constants.ADMIN);
 			user.setPassword(Constants.ADMIN_INIT_PASSWORD);
+			user.setAliveFlag(Constants.VALID_FLAG);
 			repository.insert(user);
 		}
 		return "{\"result\":\"failed\"}";

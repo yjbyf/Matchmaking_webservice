@@ -1,7 +1,5 @@
 package com.baiyufan.controllers;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -46,7 +44,11 @@ public class UserController {
 		List<User> list = repository.findByUserName(userName);
 		int count = 0;
 		if (list != null) {
-			count = list.size();
+			for (User user : list) {
+				if (Constants.VALID_FLAG.equals(user.getAliveFlag())) {
+					count++;
+				}
+			}
 		}
 		return "{\"result\":" + count + "}";
 	}
@@ -79,16 +81,16 @@ public class UserController {
 		// http头中的用户名和密码（是实际操作人的）
 		String userNameFromInput = null;
 		String passwordFromInput = null;
-		
-		//System.out.println(sb.toString());
+
+		// System.out.println(sb.toString());
 		JSONObject json = RequestUtils.getJSONObjectFromRequest(request);
 		try {
-			if(json!=null){
+			if (json != null) {
 				userNameFromInput = json.getString("userName");
 				passwordFromInput = json.getString("password");
 			}
-			//System.err.println(userNameFromInput);
-			//System.err.println(passwordFromInput);
+			// System.err.println(userNameFromInput);
+			// System.err.println(passwordFromInput);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
