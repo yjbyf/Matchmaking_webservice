@@ -14,5 +14,6 @@ public interface UserRepository extends MongoRepository<User, String> {
 
 	List<User> findByUserName(@Param("name") String name);
 	List<User> findById(@Param("id") String id);
+	List<User> findByAliveFlag(@Param("aliveFlag") String aliveFlag);
 
 }

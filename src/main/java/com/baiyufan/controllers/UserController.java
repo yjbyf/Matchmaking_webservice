@@ -1,12 +1,19 @@
 package com.baiyufan.controllers;
 
+import java.net.UnknownHostException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.bson.types.ObjectId;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,11 +22,20 @@ import com.baiyufan.respository.User;
 import com.baiyufan.respository.UserRepository;
 import com.baiyufan.utils.Constants;
 import com.baiyufan.utils.RequestUtils;
+import com.mongodb.Mongo;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 @RestController
 public class UserController {
 	@Autowired
 	private UserRepository repository;
+	
+	@Autowired
+	private MongoTemplate mongoTemplate;
+	
+	@Value("${spring.data.mongodb.database}")
+	private String mongodbDatabse;
 
 	// @RequestMapping(Constants.GET_USER_LIST_WITH_PRIV)
 	// public String validLogin(
@@ -109,5 +125,19 @@ public class UserController {
 			}
 		}
 		return Constants.JSON_RESULT_FAILED;
+	}
+	
+	@RequestMapping(Constants.USER_REST_WEBSERVICE_NO_PRIV)
+	public List<User> getUserListWithoutPriv() {
+		//System.err.println(mongoTemplate);		
+		Query query = new Query(where("aliveFlag").is(Constants.VALID_FLAG).and("userName").ne(Constants.ADMIN));
+		List<User> userList =mongoTemplate.find(query, User.class);
+		for(User user:userList){
+			user.setPassword(null);//屏蔽密码
+		}
+		//清除密码
+		return userList;
+		
+		//return repository.findByAliveFlag(Constants.VALID_FLAG);
 	}
 }

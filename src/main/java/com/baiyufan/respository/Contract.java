@@ -26,8 +26,9 @@ public class Contract {
 	private int serviceTimes;
 	// 买单老师
 	@DBRef
-	private Employee checker;
-	private Employee checkerInfo;
+	private User checker;
+	private User checkerInfo;
+	private String checkerName;
 	// 发票号
 	private String vatNO;
 	// 合同开始日期
@@ -88,11 +89,11 @@ public class Contract {
 		this.serviceTimes = serviceTimes;
 	}
 
-	public Employee getChecker() {
+	public User getChecker() {
 		return checker;
 	}
 
-	public void setChecker(Employee checker) {
+	public void setChecker(User checker) {
 		this.checker = checker;
 	}
 
@@ -128,11 +129,11 @@ public class Contract {
 		this.personInfo = personInfo;
 	}
 
-	public Employee getCheckerInfo() {
+	public User getCheckerInfo() {
 		return checker;
 	}
 
-	public void setCheckerInfo(Employee checkerInfo) {
+	public void setCheckerInfo(User checkerInfo) {
 		this.checkerInfo = checkerInfo;
 	}
 
@@ -161,6 +162,13 @@ public class Contract {
 	public String getGender() {
 		if (this.person != null) {
 			return person.getGender();
+		}
+		return "";
+	}
+
+	public String getCheckerName() {
+		if (this.checker != null) {
+			return checker.getStaff();
 		}
 		return "";
 	}
