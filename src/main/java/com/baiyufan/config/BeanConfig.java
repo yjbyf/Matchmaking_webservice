@@ -45,6 +45,7 @@ public class BeanConfig {
 		FilterRegistrationBean registrationBean = new FilterRegistrationBean();
 		RestContentFilter restContentFilter = new RestContentFilter();
 		registrationBean.setFilter(restContentFilter);
+		registrationBean.addUrlPatterns("/" + Constants.URL_PRIV + "/*");
 		registrationBean.addUrlPatterns("/test/*");//test目录下存放测试用例
 		registrationBean.setOrder(3);
 		return registrationBean;

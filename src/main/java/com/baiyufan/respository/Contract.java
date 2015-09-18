@@ -37,6 +37,7 @@ public class Contract {
 	private String endDate;
 
 	private String aliveFlag; // 有效标记
+	private String createdBy;//创建人
 
 	// 如果合同结束日期小于当天日期归档到历史数据
 	// 功能 新增 修改 删除（管理员有权限） 查询
@@ -171,6 +172,14 @@ public class Contract {
 			return checker.getStaff();
 		}
 		return "";
+	}
+	
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
 	}
 
 }

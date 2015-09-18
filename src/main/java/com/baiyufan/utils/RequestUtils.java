@@ -48,6 +48,15 @@ public class RequestUtils {
 		String password = authParts[1];
 		return password;
 	}
+	
+	public static String getUserIdFromRequestAuthorization(HttpServletRequest request) {
+		String[] authParts = getStringArrayFromRequestAuthorization(request);
+		if (authParts == null) {
+			return null;
+		}
+		String userId = authParts[2];
+		return userId;
+	}
 
 	public static String getStringFromRequest(HttpServletRequest request) {
 		StringBuilder sb = new StringBuilder();

@@ -31,6 +31,9 @@ public class RestSecurityFilter implements Filter {
 				.getUserNameFromRequestAuthorization(request);
 		String password = RequestUtils
 				.getPasswordFromRequestAuthorization(request);
+		
+		//String userId = RequestUtils.getUserIdFromRequestAuthorization(request);
+		//System.err.println(userId);
 		if (username == null || password == null) {
 			return;
 		}

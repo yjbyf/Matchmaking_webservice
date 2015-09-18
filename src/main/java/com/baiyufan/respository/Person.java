@@ -21,6 +21,8 @@ public class Person {
 	private String requirement; //择偶要求
 	private String aliveFlag; //有效标记
 	
+	private String createdBy;//创建人
+	
 	private String pk;// json返回id用，实现方式见get方法
 	public String getPk() {
 		return id;
@@ -116,6 +118,14 @@ public class Person {
 	}
 	public void setRequirement(String requirement) {
 		this.requirement = requirement;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
 	}
 	
 	
