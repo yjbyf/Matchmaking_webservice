@@ -4,6 +4,7 @@ import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.baiyufan.filter.RestContentFilter;
 import com.baiyufan.filter.RestSecurityFilter;
 import com.baiyufan.filter.SimpleCORSFilter;
 import com.baiyufan.utils.Constants;
@@ -13,7 +14,16 @@ public class BeanConfig {
 	//@Autowired
 	//private Filter securityFilter;
 	//定义filter的优先级
-	@Bean
+    @Bean
+    public FilterRegistrationBean corsFilterRegistrationBean() {
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+        SimpleCORSFilter simpleCORSFilter = new SimpleCORSFilter();
+        registrationBean.setFilter(simpleCORSFilter);
+        registrationBean.setOrder(1);
+        return registrationBean;
+    }
+    
+    @Bean
     public FilterRegistrationBean filterRegistrationBean() {
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         RestSecurityFilter securityFilter = new RestSecurityFilter();
@@ -25,13 +35,17 @@ public class BeanConfig {
         registrationBean.setOrder(2);
         return registrationBean;
     }
-
+    
     @Bean
-    public FilterRegistrationBean corsFilterRegistrationBean() {
+    public FilterRegistrationBean restContentFilterRegistrationBean() {
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();
-        SimpleCORSFilter simpleCORSFilter = new SimpleCORSFilter();
-        registrationBean.setFilter(simpleCORSFilter);
-        registrationBean.setOrder(1);
+        RestContentFilter restContentFilter = new RestContentFilter();
+        registrationBean.setFilter(restContentFilter);
+        registrationBean.addUrlPatterns("/test");
+        registrationBean.addUrlPatterns("/contact");
+        registrationBean.setOrder(3);
         return registrationBean;
     }
+    
+    
 }
