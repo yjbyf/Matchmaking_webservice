@@ -41,9 +41,7 @@ public class RestSecurityFilter implements Filter {
 			// System.err.println(requestUrl);
 			// 只有admin才能访问/user/*和/employee/*下的资源
 			if (requestUrl
-					.startsWith(Constants.USER_REST_WEBSERVICE_PATH_PRE_WTIH_SLASH)
-					|| requestUrl
-							.startsWith(Constants.EMPLOYEE_REST_WEBSERVICE_PATH_PRE_WTIH_SLASH)) {
+					.startsWith(Constants.USER_REST_WEBSERVICE_PATH_PRE_WTIH_SLASH)) {
 				if (!Constants.ADMIN.equals(username)) {
 					return;
 				}

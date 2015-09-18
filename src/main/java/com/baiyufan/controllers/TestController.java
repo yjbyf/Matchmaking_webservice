@@ -33,7 +33,7 @@ public class TestController {
 	private String mongodbDatabse;
 
 	
-	@RequestMapping("contact/testAdd")
+	@RequestMapping("/test/contact/testAdd")
 	public String testAdd() {
 		List<User> users = userRepository.findById(USER_ID);
 		if (users != null && users.size() > 0) {
@@ -56,7 +56,7 @@ public class TestController {
 		return mongodbDatabse;
 	}
 
-	@RequestMapping("contact/add")
+	@RequestMapping("/test/contact/add")
 	public String add(HttpServletRequest request) {
 		JSONObject json = RequestUtils.getJSONObjectFromRequest(request);
 		List<User> user = userRepository.findById("55eef301360fbff326ceef88");
@@ -70,7 +70,7 @@ public class TestController {
 		return Constants.JSON_RESULT_SUCESS;
 	}
 
-	@RequestMapping(value="test",produces = "application/json; charset=utf-8")
+	@RequestMapping(value="/test/restFilter",produces = "application/json; charset=utf-8")
 	public @ResponseBody String test() {
 		return "{\"result\":\"测试中文\"}";
 	}
