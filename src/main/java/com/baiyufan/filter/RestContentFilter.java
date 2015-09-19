@@ -49,7 +49,7 @@ public class RestContentFilter implements Filter {
 		// 取当前用户id
 		String currentUserId = RequestUtils
 				.getUserIdFromRequestAuthorization(req);
-		System.err.println(currentUserId);
+		//System.err.println(currentUserId);
 		BufferedHttpResponseWrapper responseWrapper = new BufferedHttpResponseWrapper(
 				(HttpServletResponse) response);
 
@@ -57,17 +57,17 @@ public class RestContentFilter implements Filter {
 
 		String responseContent = new String(responseWrapper.getBuffer(),
 				"UTF-8");
-		System.err.println("response content:" + responseContent);
+		//System.err.println("response content:" + responseContent);
 		String requestUrl = req.getRequestURI();
 		String paths[] = requestUrl.split("/");
 		String path = "";
 		if (paths != null && paths.length > 0) {
 			path = paths[paths.length - 1];
 		}
-		System.err.println(req.getRequestURI());
+		//System.err.println(req.getRequestURI());
 
 		String entityName = path;
-		System.err.println(entityName);
+		//System.err.println(entityName);
 		List<Map<String, Object>> persons = JsonPath.read(responseContent,
 				"$._embedded." + entityName);
 
@@ -99,7 +99,7 @@ public class RestContentFilter implements Filter {
 		}
 		strFromSb = "[" + strFromSb + "]";
 
-		System.err.println(strFromSb);
+		//System.err.println(strFromSb);
 
 		byte[] realResponse = strFromSb.getBytes("UTF8");
 		response.setContentLength(realResponse.length);

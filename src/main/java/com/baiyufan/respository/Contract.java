@@ -26,9 +26,12 @@ public class Contract {
 	private float serviceTimes;
 	// 买单老师
 	@DBRef
-	private User checker;
+	private User checker;	
 	private User checkerInfo;//add
 	private String checkerName;//add
+	private String checkerId;//add
+	
+
 	// 发票号
 	private String vatNO;
 	// 合同开始日期
@@ -163,6 +166,13 @@ public class Contract {
 	public String getGender() {
 		if (this.person != null) {
 			return person.getGender();
+		}
+		return "";
+	}
+	
+	public String getCheckerId() {
+		if (this.checker != null) {
+			return checker.getId();
 		}
 		return "";
 	}
