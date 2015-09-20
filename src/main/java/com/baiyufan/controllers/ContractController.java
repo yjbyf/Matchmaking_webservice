@@ -28,6 +28,10 @@ import com.google.gson.Gson;
 @RestController
 public class ContractController {
 
+	
+
+	private static final String PERSON_ID = "person.id";
+
 	@Autowired
 	private ContractRepository contractRepository;
 
@@ -47,23 +51,23 @@ public class ContractController {
 		//判断是新增还是修改
 		JSONUtils json = RequestUtils.getJSONObjectFromRequest(request);
 		JSONObject personInfo = (JSONObject) json.get("personInfo"); // 拿到其中的person的json字符串
-		String personId = personInfo.getString("pk");
+		String personId = personInfo.getString(Constants.PK);
 		String id=null;
 		try {
-			id = (String)json.get("id");
+			id = (String)json.get(Constants.ID);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		//根据personId去查找此人所有的合同
 		List<Contract> contractList;
 		Query query;
 		if(id!=null&&id.length()>0){
 			//修改,需要排除已有的合同
-			query = new Query(where("person.id").is(personId).and("id").ne(id));
+			query = new Query(where(PERSON_ID).is(personId).and(Constants.ALIVE_FLAG).is(Constants.VALID_FLAG).and(Constants.ID).ne(id));
 		}else{
 			//新增
-			query = new Query(where("person.id").is(personId));
+			query = new Query(where(PERSON_ID).is(personId).and(Constants.ALIVE_FLAG).is(Constants.VALID_FLAG));
 		}
 		contractList =mongoTemplate.find(query, Contract.class);
 		if(contractList!=null&&contractList.size()>0){
@@ -100,8 +104,8 @@ public class ContractController {
 			JSONObject checkerInfo = (JSONObject) json.get("checkerInfo");
 
 			Person person = personRepository
-					.findOne(personInfo.getString("pk")); // 根据主键拿到对象
-			User user = userRepository.findOne(checkerInfo.getString("pk"));
+					.findOne(personInfo.getString(Constants.PK)); // 根据主键拿到对象
+			User user = userRepository.findOne(checkerInfo.getString(Constants.PK));
 
 			// String checkerId = (String) json.getValue("checkerId");// 同上
 			// User checker = userRepository.findOne(checkerId);
@@ -111,7 +115,7 @@ public class ContractController {
 			json.remove("personId");
 			json.remove("name");
 			json.remove("gender");
-			json.remove("pk");
+			json.remove(Constants.PK);
 			json.remove("personInfo");
 			json.remove("checkerInfo");
 			json.remove("checkerName");

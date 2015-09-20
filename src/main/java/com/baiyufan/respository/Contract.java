@@ -16,7 +16,7 @@ public class Contract {
 	// 性别
 	@DBRef
 	private Person person;
-	private Person personInfo;//add
+	//private Person personInfo;//add
 	private String personId;//add
 	private String name;//add
 	private String gender;//add
@@ -27,7 +27,7 @@ public class Contract {
 	// 买单老师
 	@DBRef
 	private User checker;	
-	private User checkerInfo;//add
+	//private User checkerInfo;//add
 	private String checkerName;//add
 	private String checkerId;//add
 	
@@ -129,17 +129,17 @@ public class Contract {
 		return person;
 	}
 
-	public void setPersonInfo(Person personInfo) {
-		this.personInfo = personInfo;
-	}
+//	public void setPersonInfo(Person personInfo) {
+//		this.personInfo = personInfo;
+//	}
 
 	public User getCheckerInfo() {
 		return checker;
 	}
 
-	public void setCheckerInfo(User checkerInfo) {
-		this.checkerInfo = checkerInfo;
-	}
+	// public void setCheckerInfo(User checkerInfo) {
+	// this.checkerInfo = checkerInfo;
+	// }
 
 	public String getAliveFlag() {
 		return aliveFlag;

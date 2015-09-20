@@ -130,7 +130,7 @@ public class UserController {
 	@RequestMapping(Constants.USER_REST_WEBSERVICE_NO_PRIV)
 	public List<User> getUserListWithoutPriv() {
 		//System.err.println(mongoTemplate);		
-		Query query = new Query(where("aliveFlag").is(Constants.VALID_FLAG).and("userName").ne(Constants.ADMIN));
+		Query query = new Query(where(Constants.ALIVE_FLAG).is(Constants.VALID_FLAG).and("userName").ne(Constants.ADMIN));
 		List<User> userList =mongoTemplate.find(query, User.class);
 		for(User user:userList){
 			user.setPassword(null);//屏蔽密码

@@ -1,12 +1,19 @@
 package com.baiyufan.utils;
 
 public class Constants {
+	// ///////////////////////////////////////////////////////////////////////////////////////////////////
+	// database fields
+	public final static String VALID_FLAG = "1";
+	public final static String INVALID_FLAG = "0";
+	public final static String ALIVE_FLAG = "aliveFlag";
+	public final static String ID = "id";
+	public final static String PK = "pk";
+
+	// ///////////////////////////////////////////////////////////////////////////////////////////////
+	// url path
 	public final static String SLASH = "/";
 
 	public final static String LOGIN_VALID = "loginValid";
-
-	public final static String VALID_FLAG = "1";
-	public final static String INVALID_FLAG = "0";
 
 	public final static String URL_NOPRIV = "open";
 	public final static String URL_PRIV = "rest";
@@ -44,17 +51,19 @@ public class Constants {
 
 	public final static String CONTRACT_SAVE_REST_WEBSERVICE_PATH = SLASH
 			+ URL_PRIV + SLASH + CONTRACT_REST_WEBSERVICE_PATH + "/save";
-	
+
 	public final static String CONTRACT_VALID_REST_WEBSERVICE_PATH = SLASH
 			+ URL_PRIV + SLASH + CONTRACT_REST_WEBSERVICE_PATH + "/valid";
 
 	public final static String EMPLOYEE_REST_WEBSERVICE_PATH_PRE_WTIH_SLASH = SLASH
 			+ EMPLOYEE_REST_WEBSERVICE_PATH;
-
+	// ///////////////////////////////////////////////////////////////////////////////////////////////////
+	// admin init password
 	public final static String ADMIN = "admin";
 
 	public final static String ADMIN_INIT_PASSWORD = "21232f297a57a5a743894a0e4a801fc3";
-
+	// /////////////////////////////////////////////////////////////////////////////////////////////////////
+	// json result for response
 	public final static String JSON_RESULT_SUCESS = "{\"result\":\"success\"}";
 	public final static String JSON_RESULT_FAILED = "{\"result\":\"failed\"}";
 }
