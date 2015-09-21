@@ -125,17 +125,17 @@ public class Contract {
 		this.endDate = endDate;
 	}
 
-	public Person getPersonInfo() {
-		return person;
-	}
+//	public Person getPersonInfo() {
+//		return person;
+//	}
 
 //	public void setPersonInfo(Person personInfo) {
 //		this.personInfo = personInfo;
 //	}
 
-	public User getCheckerInfo() {
-		return checker;
-	}
+//	public User getCheckerInfo() {
+//		return checker;
+//	}
 
 	// public void setCheckerInfo(User checkerInfo) {
 	// this.checkerInfo = checkerInfo;

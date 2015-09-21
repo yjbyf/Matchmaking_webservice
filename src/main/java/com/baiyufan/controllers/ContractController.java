@@ -28,8 +28,6 @@ import com.google.gson.Gson;
 @RestController
 public class ContractController {
 
-	
-
 	private static final String PERSON_ID = "person.id";
 
 	@Autowired
@@ -40,55 +38,59 @@ public class ContractController {
 
 	@Autowired
 	private PersonRepository personRepository;// 用于合同挂靠人员
-	
+
 	@Autowired
 	private MongoTemplate mongoTemplate;
 
 	// 合同校验
 	@RequestMapping(Constants.CONTRACT_VALID_REST_WEBSERVICE_PATH)
-	public String valid(HttpServletRequest request) throws JSONException  {
+	public String valid(HttpServletRequest request) throws JSONException {
 		boolean valid = true;
-		//判断是新增还是修改
+		// 判断是新增还是修改
 		JSONUtils json = RequestUtils.getJSONObjectFromRequest(request);
 		JSONObject personInfo = (JSONObject) json.get("personInfo"); // 拿到其中的person的json字符串
 		String personId = personInfo.getString(Constants.PK);
-		String id=null;
+		String id = null;
 		try {
-			id = (String)json.get(Constants.ID);
+			id = (String) json.get(Constants.ID);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
-			//e.printStackTrace();
+			// e.printStackTrace();
 		}
-		//根据personId去查找此人所有的合同
+		// 根据personId去查找此人所有的合同
 		List<Contract> contractList;
 		Query query;
-		if(id!=null&&id.length()>0){
-			//修改,需要排除已有的合同
-			query = new Query(where(PERSON_ID).is(personId).and(Constants.ALIVE_FLAG).is(Constants.VALID_FLAG).and(Constants.ID).ne(id));
-		}else{
-			//新增
-			query = new Query(where(PERSON_ID).is(personId).and(Constants.ALIVE_FLAG).is(Constants.VALID_FLAG));
+		if (id != null && id.length() > 0) {
+			// 修改,需要排除已有的合同
+			query = new Query(where(PERSON_ID).is(personId)
+					.and(Constants.ALIVE_FLAG).is(Constants.VALID_FLAG)
+					.and(Constants.ID).ne(id));
+		} else {
+			// 新增
+			query = new Query(where(PERSON_ID).is(personId)
+					.and(Constants.ALIVE_FLAG).is(Constants.VALID_FLAG));
 		}
-		contractList =mongoTemplate.find(query, Contract.class);
-		if(contractList!=null&&contractList.size()>0){
-			//判断两个日期是否在范围之内
-			for(Contract contract : contractList){
-				String startDate = (String)json.get("startDate");
-				String endDate = (String)json.get("endDate");
+		contractList = mongoTemplate.find(query, Contract.class);
+		if (contractList != null && contractList.size() > 0) {
+			// 判断两个日期是否在范围之内
+			for (Contract contract : contractList) {
+				String startDate = (String) json.get("startDate");
+				String endDate = (String) json.get("endDate");
 				String otherStartDate = contract.getStartDate();
 				String otherEndDate = contract.getEndDate();
-				//System.err.println("2015-01".compareTo("2015-02"));
-				if(startDate.compareTo(otherEndDate)>=0||endDate.compareTo(otherStartDate)<=0){
-				}else{
-					//落入范围之内
-					valid= false;
+				// System.err.println("2015-01".compareTo("2015-02"));
+				if (startDate.compareTo(otherEndDate) >= 0
+						|| endDate.compareTo(otherStartDate) <= 0) {
+				} else {
+					// 落入范围之内
+					valid = false;
 					break;
 				}
 			}
 		}
-		if(valid){
+		if (valid) {
 			return Constants.JSON_RESULT_SUCESS;
-		}else{
+		} else {
 			return Constants.JSON_RESULT_FAILED;
 		}
 	}
@@ -100,44 +102,49 @@ public class ContractController {
 
 		if (json != null) {
 			// 拿到@dbref的主键
-			JSONObject personInfo = (JSONObject) json.get("personInfo"); // 拿到其中的person的json字符串
-			JSONObject checkerInfo = (JSONObject) json.get("checkerInfo");
+			if (json.has("personInfo") && json.has("checkerInfo")) {
+				JSONObject personInfo = (JSONObject) json.get("personInfo"); // 拿到其中的person的json字符串
+				JSONObject checkerInfo = (JSONObject) json.get("checkerInfo");
 
-			Person person = personRepository
-					.findOne(personInfo.getString(Constants.PK)); // 根据主键拿到对象
-			User user = userRepository.findOne(checkerInfo.getString(Constants.PK));
+				Person person = personRepository.findOne(personInfo
+						.getString(Constants.PK)); // 根据主键拿到对象
+				User user = userRepository.findOne(checkerInfo
+						.getString(Constants.PK));
 
-			// String checkerId = (String) json.getValue("checkerId");// 同上
-			// User checker = userRepository.findOne(checkerId);
+				// String checkerId = (String) json.getValue("checkerId");// 同上
+				// User checker = userRepository.findOne(checkerId);
 
-			json.remove("person"); // json中拿掉@dbref字段对应的值，防止json转换bean出错
-			json.remove("checker");
-			json.remove("personId");
-			json.remove("name");
-			json.remove("gender");
-			json.remove(Constants.PK);
-			json.remove("personInfo");
-			json.remove("checkerInfo");
-			json.remove("checkerName");
-			// System.err.println(json.toString());
-			Contract contract = new Gson().fromJson(json.toString(),
-					Contract.class);
-			contract.setPerson(person);// 设置@dbref字段内容
-			contract.setChecker(user);
-			if (contract.getId() != null && contract.getId().length() > 0) {
-
+				json.remove("person"); // json中拿掉@dbref字段对应的值，防止json转换bean出错
+				json.remove("checker");
+				json.remove("checkerId");
+				json.remove("personId");
+				json.remove("name");
+				json.remove("gender");
+				json.remove(Constants.PK);
+				json.remove("personInfo");
+				json.remove("checkerInfo");
+				json.remove("checkerName");
+				// System.err.println(json.toString());
+				Contract contract = new Gson().fromJson(json.toString(),
+						Contract.class);
+				contract.setPerson(person);// 设置@dbref字段内容
+				contract.setChecker(user);
+				if (contract.getId() != null && contract.getId().length() > 0) {
+					contractRepository.save(contract);// 修改
+				} else {
+					contract.setAliveFlag(Constants.VALID_FLAG);
+					contractRepository.insert(contract);// 新增
+				}
+			} else {
+				Contract contract = new Gson().fromJson(json.toString(),
+						Contract.class);
 				if (Constants.INVALID_FLAG.equals(contract.getAliveFlag())) {
 					// 删除---只要设置标记位，其他都不用修改
 					Contract toBeDeleted = contractRepository.findOne(contract
 							.getId());
 					toBeDeleted.setAliveFlag(Constants.INVALID_FLAG);
 					contractRepository.save(toBeDeleted);
-				} else {
-					contractRepository.save(contract);// 修改
 				}
-			} else {
-				contract.setAliveFlag(Constants.VALID_FLAG);
-				contractRepository.insert(contract);// 新增
 			}
 
 		}
