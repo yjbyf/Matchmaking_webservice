@@ -75,6 +75,7 @@ public class RestContentFilter implements Filter {
 					"$._embedded." + entityName);
 
 			List<Map<String, Object>> entitiesToBeOutput = new ArrayList<Map<String, Object>>();
+			//按权限过滤数据
 			for (Map<String, Object> entity : entities) {
 				// 当前用户id和记录上面的id比较
 				String createdBy = (String) entity.get("createdBy");
@@ -108,6 +109,7 @@ public class RestContentFilter implements Filter {
 		} catch (PathNotFoundException e) {
 			
 		}
+		//输出内容到respone
 		response.setContentLength(realResponse.length);
 		response.getOutputStream().write(realResponse);
 		// response.setContentLength(responseWrapper.getBufferSize());
