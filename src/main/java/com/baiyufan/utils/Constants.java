@@ -1,6 +1,8 @@
 package com.baiyufan.utils;
 
 public class Constants {
+	//common setting
+	public final static String UTF8 = "UTF8";
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////
 	// database fields
 	public final static String VALID_FLAG = "1";
