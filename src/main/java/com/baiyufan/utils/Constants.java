@@ -3,6 +3,7 @@ package com.baiyufan.utils;
 public class Constants {
 	//common setting
 	public final static String UTF8 = "UTF8";
+	public final static String NULL_STRING = "";
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////
 	// database fields
 	public final static String VALID_FLAG = "1";
@@ -61,6 +62,9 @@ public class Constants {
 	
 	//match
 	public final static String MATCH_REST_WEBSERVICE_PATH = "/match";
+	
+	public final static String MATCH_NEW_REST_WEBSERVICE_PATH = SLASH
+			+ URL_PRIV + SLASH + MATCH_REST_WEBSERVICE_PATH + "/new";
 
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////
 	// admin init password

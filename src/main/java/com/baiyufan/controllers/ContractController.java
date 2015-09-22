@@ -163,7 +163,7 @@ public class ContractController {
 		 * contactRepository.insert(contact);//成功 }
 		 */
 
-		return "";
+		return Constants.NULL_STRING;
 	}
 
 }
