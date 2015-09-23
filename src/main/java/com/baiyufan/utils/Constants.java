@@ -4,6 +4,8 @@ public class Constants {
 	//common setting
 	public final static String UTF8 = "UTF8";
 	public final static String NULL_STRING = "";
+	public final static String NEW = "new";
+	public final static String MOD = "mod";
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////
 	// database fields
 	public final static String VALID_FLAG = "1";
@@ -61,10 +63,16 @@ public class Constants {
 			+ EMPLOYEE_REST_WEBSERVICE_PATH;
 	
 	//match
-	public final static String MATCH_REST_WEBSERVICE_PATH = "/match";
+	public final static String MATCH_REST_WEBSERVICE_PATH = "match";
 	
 	public final static String MATCH_NEW_REST_WEBSERVICE_PATH = SLASH
 			+ URL_PRIV + SLASH + MATCH_REST_WEBSERVICE_PATH + "/new";
+	
+	public final static String MATCH_MOD_REST_WEBSERVICE_PATH = SLASH
+			+ URL_PRIV + SLASH + MATCH_REST_WEBSERVICE_PATH + "/mod";
+	
+	public final static String MATCH_DEL_REST_WEBSERVICE_PATH = SLASH
+			+ URL_PRIV + SLASH + MATCH_REST_WEBSERVICE_PATH + "/del";
 
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////
 	// admin init password

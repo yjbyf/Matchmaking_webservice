@@ -30,27 +30,38 @@ public class MatchController {
 
 	@Autowired
 	private PersonRepository personRepository;// 用于配对双方
-	
+
 	@Autowired
-	private ContractRepository contractRepository; //用于合同
+	private ContractRepository contractRepository; // 用于合同
 
 	// 配对新增入口
 	@RequestMapping(Constants.MATCH_NEW_REST_WEBSERVICE_PATH)
 	public String newMatch(HttpServletRequest request) throws JSONException {
+		doSave(request);
+		return Constants.NULL_STRING;
+	}
+
+	private void doSave(HttpServletRequest request) throws JSONException {
 		JSONUtils json = RequestUtils.getJSONObjectFromRequest(request);// 提交参数的json对象获取
 		if (json != null) {
-			if (json.has("nameId") && json.has("serviceEmployeeId")&&json.has("matchPersonId")) {
+			if (json.has("nameId") && json.has("serviceEmployeeId")
+					&& json.has("matchPersonId")) {
 				String nameId = (String) json.get("nameId"); // 拿到其中的person的json字符串
-				String serviceEmployeeId = (String) json.get("serviceEmployeeId");
+				String serviceEmployeeId = (String) json
+						.get("serviceEmployeeId");
 				String matchPersonId = (String) json.get("matchPersonId");
 				String nameContractId = (String) json.get("nameContractId");
-				String matchPersonContractId = (String) json.get("matchPersonContractId");;
+				String matchPersonContractId = (String) json
+						.get("matchPersonContractId");
+				;
 
 				Person person = personRepository.findOne(nameId); // 根据主键拿到对象
 				Person object = personRepository.findOne(matchPersonId); // 根据主键拿到对象
 				User user = userRepository.findOne(serviceEmployeeId);
-				Contract personContract = contractRepository.findOne(nameContractId);
-				Contract objectContract = contractRepository.findOne(matchPersonContractId);
+				Contract personContract = contractRepository
+						.findOne(nameContractId);
+				Contract objectContract = contractRepository
+						.findOne(matchPersonContractId);
 
 				// 拿到@dbref的主键
 				Match match = new Gson().fromJson(json.toString(), Match.class);
@@ -59,10 +70,40 @@ public class MatchController {
 				match.setServiceEmployee(user);
 				match.setNameContract(personContract);
 				match.setMatchPersonContract(objectContract);
-				match.setPk(null);
-
+				setUnnecessaryField(match);
 				matchRepository.save(match);
 			}
+		}
+	}
+
+	private void setUnnecessaryField(Match match) {
+		match.setPk(null);
+		match.setRefGender(null);
+		match.setRefMatchPerson(null);
+		match.setRefName(null);
+		match.setRefServiceEmployee(null);
+		match.setRefNameContractId(null);
+		match.setRefServiceEmployeeId(null);
+		match.setRefMatchPersonContractId(null);
+	}
+
+	// 配对修改入口
+	@RequestMapping(Constants.MATCH_MOD_REST_WEBSERVICE_PATH)
+	public String modMatch(HttpServletRequest request) throws JSONException {
+		doSave(request);
+		return Constants.NULL_STRING;
+	}
+
+	// 配对删除入口
+	@RequestMapping(Constants.MATCH_DEL_REST_WEBSERVICE_PATH)
+	public String delMatch(HttpServletRequest request) throws JSONException {
+		JSONUtils json = RequestUtils.getJSONObjectFromRequest(request);// 提交参数的json对象获取
+		if (json != null) {
+			Match match = new Gson().fromJson(json.toString(), Match.class);
+			Match toBeDelete = matchRepository.findOne(match.getId());
+			setUnnecessaryField(toBeDelete);
+			toBeDelete.setAliveFlag(Constants.INVALID_FLAG);
+			matchRepository.save(toBeDelete);
 		}
 		return Constants.NULL_STRING;
 	}
