@@ -2,8 +2,11 @@ package com.baiyufan.controllers;
 
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.project;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.baiyufan.db.model.TUser;
+import com.baiyufan.db.persistence.TUserMapper;
 import com.baiyufan.respository.Contact;
 import com.baiyufan.respository.ContactRepository;
 import com.baiyufan.respository.PersonCount;
@@ -113,5 +118,16 @@ public class TestController {
 		List<PersonCount> list = result.getMappedResults();
 		return list;
 	}
+	
+	@Autowired
+	private TUserMapper userMapper;
+	
+	@RequestMapping(value = "/mybatis/user", produces = "application/json; charset=utf-8")
+	public @ResponseBody List<TUser> userList() {
+		TUser user = new TUser();
+		user.setUserName("aa");
+		return userMapper.selectClause(user);
+	}
+	
 
 }

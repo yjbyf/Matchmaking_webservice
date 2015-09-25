@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.baiyufan.db.model.TUser;
+import com.baiyufan.db.persistence.TUserMapper;
 import com.baiyufan.respository.User;
 import com.baiyufan.respository.UserRepository;
 import com.baiyufan.utils.Constants;
@@ -13,7 +15,7 @@ import com.baiyufan.utils.Constants;
 public class LoginController {
 
 	@Autowired
-	private UserRepository repository;
+	private TUserMapper userMapper;
 
 	@RequestMapping(Constants.LOGIN_VALID_PRE_WITH_SLASH)
 	public String validLogin(
@@ -21,7 +23,10 @@ public class LoginController {
 			@RequestParam(value = "password", defaultValue = "") String password) {
 
 		int count = 0;
-		for (User user : repository.findByUserName(userName)) {
+		TUser param = new TUser();
+		param.setUserName(userName);
+		param.setAliveFlag(Constants.VALID_FLAG);
+		for (TUser user : userMapper.selectClause(param)) {
 			count++;
 			if (password.equals(user.getPassword())
 					&& Constants.VALID_FLAG.equals(user.getAliveFlag())) {
@@ -33,13 +38,13 @@ public class LoginController {
 		// 若用户表中无超级用户，则初始化一个
 		if (count == 0 && Constants.ADMIN.equals(userName)
 				&& Constants.ADMIN_INIT_PASSWORD.equals(password)) {
-			User user = new User();
+			TUser user = new TUser();
 			user.setUserName(Constants.ADMIN);
 			user.setStaff(Constants.ADMIN);
 			user.setPassword(Constants.ADMIN_INIT_PASSWORD);
 			user.setAliveFlag(Constants.VALID_FLAG);
-			repository.insert(user);
+			userMapper.insert(user);
 		}
-		return "{\"result\":\"failed\"}";
+		return Constants.JSON_RESULT_FAILED;
 	}
 }

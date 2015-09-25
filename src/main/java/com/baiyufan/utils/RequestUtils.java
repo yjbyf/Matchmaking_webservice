@@ -57,6 +57,11 @@ public class RequestUtils {
 		String userId = authParts[2];
 		return userId;
 	}
+	
+	public static Integer getCreatedBy(HttpServletRequest request) {
+		
+		return new Integer(getUserIdFromRequestAuthorization(request));
+	}
 
 	public static String getStringFromRequest(HttpServletRequest request) {
 		StringBuilder sb = new StringBuilder();

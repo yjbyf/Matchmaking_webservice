@@ -1,72 +1,63 @@
 package com.baiyufan.controllers;
 
-import java.net.UnknownHostException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.bson.types.ObjectId;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.baiyufan.respository.User;
-import com.baiyufan.respository.UserRepository;
+import com.baiyufan.db.model.TUser;
+import com.baiyufan.db.persistence.TUserMapper;
 import com.baiyufan.utils.Constants;
 import com.baiyufan.utils.RequestUtils;
-import com.mongodb.Mongo;
-
-import static org.springframework.data.mongodb.core.query.Criteria.where;
+import com.google.gson.Gson;
 
 @RestController
 public class UserController {
-	@Autowired
-	private UserRepository repository;
-	
-	@Autowired
-	private MongoTemplate mongoTemplate;
-	
-	@Value("${spring.data.mongodb.database}")
-	private String mongodbDatabse;
 
-	// @RequestMapping(Constants.GET_USER_LIST_WITH_PRIV)
-	// public String validLogin(
-	// @RequestParam(value = "userName", defaultValue = "") String userName,
-	// @RequestParam(value = "password", defaultValue = "") String password,
-	// HttpServletRequest request) {
-	//
-	// for (User user : repository.findByUserName(userName)) {
-	// if(password.equals(user.getPassword())){
-	// return "{\"result\":\""+user.getId()+"\"}";
-	// }
-	// //System.out.println(customer);
-	// }
-	// return "{\"result\":\"failed\"}";
-	// }
+	@Autowired
+	private TUserMapper userMapper;
 
+	//查询
+	@RequestMapping(value = Constants.USER_REST_WEBSERVICE_PATH_PRE_WTIH_SLASH, produces = "application/json; charset=utf-8")
+	public @ResponseBody
+	List<TUser> getUserList() {
+		return userMapper.selectAll(null);
+	}
+
+	// 按用户名计数
 	@RequestMapping(Constants.USER_REST_WEBSERVICE_COUNT)
 	public String countByName(
 			@RequestParam(value = "userName", defaultValue = "") String userName,
 			HttpServletRequest request) {
-
-		List<User> list = repository.findByUserName(userName);
-		int count = 0;
-		if (list != null) {
-			for (User user : list) {
-				if (Constants.VALID_FLAG.equals(user.getAliveFlag())) {
-					count++;
-				}
-			}
-		}
+		TUser param = new TUser();
+		param.setUserName(userName);
+		param.setAliveFlag(Constants.VALID_FLAG);
+		int count = userMapper.countClause(param);
 		return "{\"result\":" + count + "}";
+	}
+
+	//新增
+	@RequestMapping(Constants.USER_REST_WEBSERVICE_INSERT)
+	public String insert(HttpServletRequest request) {
+		JSONObject json = RequestUtils.getJSONObjectFromRequest(request);
+		TUser user = new Gson().fromJson(json.toString(), TUser.class);
+		user.setAliveFlag(Constants.VALID_FLAG);
+		return "{\"result\":" + userMapper.insert(user) + "}";
+	}
+	
+	//修改和删除
+	@RequestMapping(Constants.USER_REST_WEBSERVICE_MOD)
+	public String mod(HttpServletRequest request) {
+		JSONObject json = RequestUtils.getJSONObjectFromRequest(request);
+		TUser user = new Gson().fromJson(json.toString(), TUser.class);
+		return "{\"result\":" + userMapper.updateByPrimaryKeySelective(user) + "}";
 	}
 
 	/******************************
@@ -98,17 +89,13 @@ public class UserController {
 		String userNameFromInput = null;
 		String passwordFromInput = null;
 
-		// System.out.println(sb.toString());
 		JSONObject json = RequestUtils.getJSONObjectFromRequest(request);
 		try {
 			if (json != null) {
 				userNameFromInput = json.getString("userName");
 				passwordFromInput = json.getString("password");
 			}
-			// System.err.println(userNameFromInput);
-			// System.err.println(passwordFromInput);
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -116,28 +103,30 @@ public class UserController {
 				.getUserNameFromRequestAuthorization(request);
 		// http头中的用户名和传递过来的用户名比较，防止利用漏铜，手动的修改其他人的密码
 		if (usernameFromAuth.equals(userNameFromInput)) {
-			for (User user : repository.findByUserName(usernameFromAuth)) {
+			TUser param = new TUser();
+			param.setUserName(usernameFromAuth);
+			param.setAliveFlag(Constants.VALID_FLAG);
+			for (TUser user : userMapper.selectClause(param)) {
 				if (passwordFromInput != null) {
 					user.setPassword(passwordFromInput);
-					repository.save(user);
+					userMapper.updateByPrimaryKeySelective(user);
 					return Constants.JSON_RESULT_SUCESS;
 				}
 			}
 		}
 		return Constants.JSON_RESULT_FAILED;
 	}
-	
+
 	@RequestMapping(Constants.USER_REST_WEBSERVICE_NO_PRIV)
-	public List<User> getUserListWithoutPriv() {
-		//System.err.println(mongoTemplate);		
-		Query query = new Query(where(Constants.ALIVE_FLAG).is(Constants.VALID_FLAG).and("userName").ne(Constants.ADMIN));
-		List<User> userList =mongoTemplate.find(query, User.class);
-		for(User user:userList){
-			user.setPassword(null);//屏蔽密码
+	public List<TUser> getUserListWithoutPriv() {
+		TUser param = new TUser();
+		param.setUserName(Constants.ADMIN);
+		param.setAliveFlag(Constants.VALID_FLAG);
+		List<TUser> userList = userMapper.selectExceptName(param);
+		for (TUser user : userList) {
+			user.setPassword(null);// 屏蔽密码
 		}
-		//清除密码
+		// 清除密码
 		return userList;
-		
-		//return repository.findByAliveFlag(Constants.VALID_FLAG);
 	}
 }

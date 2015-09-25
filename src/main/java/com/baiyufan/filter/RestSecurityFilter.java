@@ -1,6 +1,7 @@
 package com.baiyufan.filter;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -13,8 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import com.baiyufan.config.ApplicationContextHolder;
-import com.baiyufan.respository.User;
-import com.baiyufan.respository.UserRepository;
+import com.baiyufan.db.model.TUser;
+import com.baiyufan.db.persistence.TUserMapper;
 import com.baiyufan.utils.Constants;
 import com.baiyufan.utils.RequestUtils;
 
@@ -31,9 +32,10 @@ public class RestSecurityFilter implements Filter {
 				.getUserNameFromRequestAuthorization(request);
 		String password = RequestUtils
 				.getPasswordFromRequestAuthorization(request);
-		
-		//String userId = RequestUtils.getUserIdFromRequestAuthorization(request);
-		//System.err.println(userId);
+
+		// String userId =
+		// RequestUtils.getUserIdFromRequestAuthorization(request);
+		// System.err.println(userId);
 		if (username == null || password == null) {
 			return;
 		}
@@ -54,15 +56,30 @@ public class RestSecurityFilter implements Filter {
 
 	}
 
+	// private boolean validUser(String username, String password) {
+	// UserRepository repository = ApplicationContextHolder.getContext()
+	// .getBean(UserRepository.class);
+	// for (User user : repository.findByUserName(username)) {
+	// if (password.equals(user.getPassword())) {
+	// return true;
+	// }
+	// }
+	// return false;
+	// }
+
 	private boolean validUser(String username, String password) {
-		UserRepository repository = ApplicationContextHolder.getContext()
-				.getBean(UserRepository.class);
-		for (User user : repository.findByUserName(username)) {
-			if (password.equals(user.getPassword())) {
-				// System.err.println(auth+" pass check");
-				return true;
+		TUserMapper userMapper = ApplicationContextHolder.getContext().getBean(
+				TUserMapper.class);
+		TUser param = new TUser();
+		param.setUserName(username);
+		param.setAliveFlag(Constants.VALID_FLAG);
+		List<TUser> userList = userMapper.selectClause(param);
+		if (userList != null) {
+			for (TUser user : userList) {
+				if (password.equals(user.getPassword())) {
+					return true;
+				}
 			}
-			// System.out.println(customer);
 		}
 		return false;
 	}

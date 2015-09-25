@@ -40,6 +40,7 @@ public class BeanConfig {
 	}
 
 	// 请求资源数据内容按照人员过滤
+	/*
 	@Bean
 	public FilterRegistrationBean restContentFilterRegistrationBean() {
 		FilterRegistrationBean registrationBean = new FilterRegistrationBean();
@@ -49,6 +50,6 @@ public class BeanConfig {
 		registrationBean.addUrlPatterns("/test/*");//test目录下存放测试用例
 		registrationBean.setOrder(3);
 		return registrationBean;
-	}
+	}*/
 
 }

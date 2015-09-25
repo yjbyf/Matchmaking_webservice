@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baiyufan.db.persistence.TUserMapper" >
+  <resultMap id="BaseResultMap" type="com.baiyufan.db.model.TUser" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="staff" property="staff" jdbcType="VARCHAR" />
+    <result column="role" property="role" jdbcType="VARCHAR" />
+    <result column="alive_flag" property="aliveFlag" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_name, password, staff, role, alive_flag
+  </sql>
+  <select id="selectClause" resultMap="BaseResultMap" parameterType="com.baiyufan.db.model.TUser" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_user
+    <where>
+        <if test="aliveFlag != null" >
+        	alive_flag = #{aliveFlag,jdbcType=VARCHAR}
+      	</if>
+      	<if test="userName != null" >
+        	and user_name = #{userName,jdbcType=VARCHAR}
+      	</if>
+    </where> 
+  </select>
+  
+  <select id="countClause" resultType="java.lang.Integer" parameterType="com.baiyufan.db.model.TUser" >
+    select 
+    count(1) as _count
+    from t_user
+    <where>
+        <if test="aliveFlag != null" >
+        	alive_flag = #{aliveFlag,jdbcType=VARCHAR}
+      	</if>
+      	<if test="userName != null" >
+        	and user_name = #{userName,jdbcType=VARCHAR}
+      	</if>
+    </where> 
+  </select>
+  
+  <select id="selectExceptName" resultMap="BaseResultMap" parameterType="com.baiyufan.db.model.TUser" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_user
+    <where>
+        <if test="userName != null" >
+        	and user_name != #{userName,jdbcType=VARCHAR}
+      	</if>
+        <if test="aliveFlag != null" >
+        	and alive_flag = #{aliveFlag,jdbcType=VARCHAR}
+      	</if>
+    </where> 
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_user
+    <where>
+        <if test="id != null" >
+        	id = #{id,jdbcType=INTEGER}
+      	</if>
+      	<if test="userName != null" >
+        	and user_name = #{userName,jdbcType=VARCHAR}
+      	</if>
+      	
+    </where> 
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.baiyufan.db.model.TUser" >
+    insert into t_user (id, user_name, password, 
+      staff, role, alive_flag
+      )
+    values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{staff,jdbcType=VARCHAR}, #{role,jdbcType=VARCHAR}, #{aliveFlag,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.baiyufan.db.model.TUser" >
+    insert into t_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="staff != null" >
+        staff,
+      </if>
+      <if test="role != null" >
+        role,
+      </if>
+      <if test="aliveFlag != null" >
+        alive_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="staff != null" >
+        #{staff,jdbcType=VARCHAR},
+      </if>
+      <if test="role != null" >
+        #{role,jdbcType=VARCHAR},
+      </if>
+      <if test="aliveFlag != null" >
+        #{aliveFlag,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.baiyufan.db.model.TUser" >
+    update t_user
+    <set >
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="staff != null" >
+        staff = #{staff,jdbcType=VARCHAR},
+      </if>
+      <if test="role != null" >
+        role = #{role,jdbcType=VARCHAR},
+      </if>
+      <if test="aliveFlag != null" >
+        alive_flag = #{aliveFlag,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.baiyufan.db.model.TUser" >
+    update t_user
+    set user_name = #{userName,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      staff = #{staff,jdbcType=VARCHAR},
+      role = #{role,jdbcType=VARCHAR},
+      alive_flag = #{aliveFlag,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
