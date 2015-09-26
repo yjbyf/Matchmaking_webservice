@@ -18,10 +18,11 @@
     <result column="alive_flag" property="aliveFlag" jdbcType="VARCHAR" />
     <result column="create_by" property="createBy" jdbcType="INTEGER" />
     <result column="constellation" property="constellation" jdbcType="VARCHAR" />
+    <result column="married_his" property="marriedHis" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, name, gender, birth_date, height, education, census, company, salary, family, 
-    house, phone, requirement, alive_flag, create_by,constellation
+    house, phone, requirement, alive_flag, create_by,constellation,married_his
   </sql>
   
   <select id="selectClause" resultMap="BaseResultMap" parameterType="com.baiyufan.db.model.TPerson" >
@@ -67,13 +68,13 @@
     insert into t_person (id, name, gender, 
       birth_date,constellation, height, education, 
       census, company, salary, 
-      family, house, phone, 
+      family, house, phone, married_his
       requirement, alive_flag, create_by
       )
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, 
       #{birthDate,jdbcType=VARCHAR},#{constellation,jdbcType=VARCHAR}, #{height,jdbcType=DECIMAL}, #{education,jdbcType=VARCHAR}, 
       #{census,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR}, #{salary,jdbcType=DECIMAL}, 
-      #{family,jdbcType=VARCHAR}, #{house,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{family,jdbcType=VARCHAR}, #{house,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},  #{marriedHis,jdbcType=VARCHAR}, 
       #{requirement,jdbcType=VARCHAR}, #{aliveFlag,jdbcType=VARCHAR}, #{createBy,jdbcType=INTEGER}
       )
   </insert>
@@ -115,6 +116,9 @@
       </if>
       <if test="house != null" >
         house,
+      </if>
+      <if test="marriedHis != null" >
+        married_his,
       </if>
       <if test="phone != null" >
         phone,
@@ -166,6 +170,9 @@
       <if test="house != null" >
         #{house,jdbcType=VARCHAR},
       </if>
+      <if test="marriedHis != null" >
+        #{marriedHis,jdbcType=VARCHAR},
+      </if>
       <if test="phone != null" >
         #{phone,jdbcType=VARCHAR},
       </if>
@@ -216,6 +223,9 @@
       <if test="house != null" >
         house = #{house,jdbcType=VARCHAR},
       </if>
+      <if test="marriedHis != null" >
+        married_his = #{marriedHis,jdbcType=VARCHAR},
+      </if>
       <if test="phone != null" >
         phone = #{phone,jdbcType=VARCHAR},
       </if>
@@ -244,6 +254,7 @@
       salary = #{salary,jdbcType=DECIMAL},
       family = #{family,jdbcType=VARCHAR},
       house = #{house,jdbcType=VARCHAR},
+      married_his = #{marriedHis,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
       requirement = #{requirement,jdbcType=VARCHAR},
       alive_flag = #{aliveFlag,jdbcType=VARCHAR},

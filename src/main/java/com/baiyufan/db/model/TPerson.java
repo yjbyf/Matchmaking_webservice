@@ -26,6 +26,8 @@ public class TPerson {
     private String family;
 
     private String house;
+    
+    private String marriedHis;//married_his
 
     private String phone;
 
@@ -161,6 +163,14 @@ public class TPerson {
 
 	public void setConstellation(String constellation) {
 		this.constellation = constellation;
+	}
+
+	public String getMarriedHis() {
+		return marriedHis;
+	}
+
+	public void setMarriedHis(String marriedHis) {
+		this.marriedHis = marriedHis;
 	}
     
     

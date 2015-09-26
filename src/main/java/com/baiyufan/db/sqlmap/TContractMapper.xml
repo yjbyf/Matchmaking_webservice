@@ -19,13 +19,28 @@
     <result column="checker_name" property="checkerName" jdbcType="VARCHAR" />
     <result column="match_times" property="matchTimes" jdbcType="VARCHAR" />
     <result column="constellation" property="constellation" jdbcType="VARCHAR" />
+    <result column="birth_date" property="birthDate" jdbcType="VARCHAR" />
+    <result column="age" property="age" jdbcType="VARCHAR" />
+    <result column="education" property="education" jdbcType="VARCHAR" />
+    <result column="salary" property="salary" jdbcType="VARCHAR" />
+    <result column="house" property="house" jdbcType="VARCHAR" />
+    <result column="married_his" property="marriedHis" jdbcType="VARCHAR" />
+    <result column="company" property="company" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, no, person, fee, service_times, checker, vat_no, start_date, end_date, alive_flag, 
-    create_by,(select name from t_person t where t.id = a.person) as name,
+    create_by,
+    (select name from t_person t where t.id = a.person) as name,
     (select gender from t_person t where t.id = a.person) as gender,
     (select constellation from t_person t where t.id = a.person) as constellation,
-    (select staff from t_user t where t.id = a.checker) as checkerName,
+    (select birth_date from t_person t where t.id = a.person) as birth_date,
+    (select year(from_days( datediff( now( ), birth_date ))) from t_person t where t.id = a.person) as age,
+    (select education from t_person t where t.id = a.person) as education,
+    (select salary from t_person t where t.id = a.person) as salary,
+    (select house from t_person t where t.id = a.person) as house,
+    (select married_his from t_person t where t.id = a.person) as married_his,
+    (select company from t_person t where t.id = a.person) as company,
+    (select staff from t_user t where t.id = a.checker) as checker_name,
     (SELECT COUNT(1) FROM t_match t WHERE t.alive_flag='1' AND t.name_contract = a.id) as match_times
   </sql>
   

@@ -6,6 +6,7 @@ public class TMatchExt extends TMatch {
 	private String serviceEmployeeName;
 	private String matchPersonName;
 	
+	
 	public String getPersonName() {
 		return personName;
 	}
@@ -31,5 +32,4 @@ public class TMatchExt extends TMatch {
 	public void setMatchPersonName(String matchPersonName) {
 		this.matchPersonName = matchPersonName;
 	}
-	
 }
