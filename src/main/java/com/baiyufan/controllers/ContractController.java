@@ -7,16 +7,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baiyufan.db.model.TContract;
 import com.baiyufan.db.persistence.TContractMapper;
-import com.baiyufan.respository.ContractRepository;
-import com.baiyufan.respository.PersonRepository;
-import com.baiyufan.respository.UserRepository;
 import com.baiyufan.utils.Constants;
 import com.baiyufan.utils.JSONUtils;
 import com.baiyufan.utils.RequestUtils;
@@ -25,26 +21,11 @@ import com.google.gson.Gson;
 @RestController
 public class ContractController {
 
-	private static final String PERSON_ID = "person.id";
-
-	@Autowired
-	private ContractRepository contractRepository;
-
-	@Autowired
-	private UserRepository userRepository;// 用于开票老师
-
-	@Autowired
-	private PersonRepository personRepository;// 用于合同挂靠人员
-
-	@Autowired
-	private MongoTemplate mongoTemplate;
-
-	// 合同查询
 	@Autowired
 	private TContractMapper contractMapper;
 
-	// 查询
-	@RequestMapping(value = Constants.CONTRACT_QUERY_REST_WEBSERVICE_PATH, produces = "application/json; charset=utf-8")
+	// 合同查询
+	@RequestMapping(value = Constants.CONTRACT_QUERY_REST_WEBSERVICE_PATH, produces = Constants.JSON_UTF8)
 	public @ResponseBody
 	List<TContract> getContractList(HttpServletRequest request) {
 		String currentUserId = RequestUtils

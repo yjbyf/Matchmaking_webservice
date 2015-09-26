@@ -4,6 +4,7 @@ public class TContractExt extends TContract {
 	private String name;
 	private String gender;
 	private String checkerName;
+	private String matchTimes;
 	
 	public String getName() {
 		return name;
@@ -22,5 +23,12 @@ public class TContractExt extends TContract {
 	}
 	public void setCheckerName(String checkerName) {
 		this.checkerName = checkerName;
+	}
+	
+	public String getMatchTimes() {
+		return matchTimes;
+	}
+	public void setMatchTimes(String matchTimes) {
+		this.matchTimes = matchTimes;
 	}
 }

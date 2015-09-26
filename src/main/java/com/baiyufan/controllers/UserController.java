@@ -25,7 +25,7 @@ public class UserController {
 	private TUserMapper userMapper;
 
 	//查询
-	@RequestMapping(value = Constants.USER_REST_WEBSERVICE_PATH_PRE_WTIH_SLASH, produces = "application/json; charset=utf-8")
+	@RequestMapping(value = Constants.USER_REST_WEBSERVICE_PATH_PRE_WTIH_SLASH, produces = Constants.JSON_UTF8)
 	public @ResponseBody
 	List<TUser> getUserList() {
 		return userMapper.selectAll(null);

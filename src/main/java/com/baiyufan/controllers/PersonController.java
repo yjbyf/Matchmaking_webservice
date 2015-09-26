@@ -22,7 +22,7 @@ public class PersonController {
 	private TPersonMapper personMapper;
 
 	// 查询
-	@RequestMapping(value = Constants.PERSON_REST_WEBSERVICE_PATH_PRE_WTIH_SLASH, produces = "application/json; charset=utf-8")
+	@RequestMapping(value = Constants.PERSON_REST_WEBSERVICE_PATH_PRE_WTIH_SLASH, produces = Constants.JSON_UTF8)
 	public @ResponseBody
 	List<TPerson> getPersonList(HttpServletRequest request) {
 		String currentUserId = RequestUtils

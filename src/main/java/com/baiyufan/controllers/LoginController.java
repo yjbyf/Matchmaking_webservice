@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.baiyufan.db.model.TUser;
 import com.baiyufan.db.persistence.TUserMapper;
-import com.baiyufan.respository.User;
-import com.baiyufan.respository.UserRepository;
 import com.baiyufan.utils.Constants;
 
 @RestController

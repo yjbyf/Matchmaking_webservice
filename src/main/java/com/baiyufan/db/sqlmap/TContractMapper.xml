@@ -16,11 +16,15 @@
     
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="gender" property="gender" jdbcType="VARCHAR" />
+    <result column="checker_name" property="checkerName" jdbcType="VARCHAR" />
+    <result column="match_times" property="matchTimes" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, no, person, fee, service_times, checker, vat_no, start_date, end_date, alive_flag, 
-    create_by,(select name from t_person t where t.id = a.person) as name,(select gender from t_person t where t.id = a.person) as gender,
-    (select staff from t_user t where t.id = a.checker) as checkerName
+    create_by,(select name from t_person t where t.id = a.person) as name,
+    (select gender from t_person t where t.id = a.person) as gender,
+    (select staff from t_user t where t.id = a.checker) as checkerName,
+    (SELECT COUNT(1) FROM t_match t WHERE t.alive_flag='1' AND t.name_contract = a.id) as match_times
   </sql>
   
   <select id="selectClause" resultMap="BaseResultMap" parameterType="com.baiyufan.db.model.TContract" >
@@ -44,8 +48,11 @@
     <where>
         alive_flag = #{aliveFlag,jdbcType=VARCHAR} 
         and person = #{person,jdbcType=INTEGER}
-        and ((#{startDate,jdbcType=VARCHAR} &lt;= end_date  and  #{startDate,jdbcType=VARCHAR} &gt;= start_date)
-          or (#{endDate,jdbcType=VARCHAR} &lt;= end_date  and  #{endDate,jdbcType=VARCHAR} &gt;= start_date))
+        and (
+        	 (#{startDate,jdbcType=VARCHAR} &lt;= end_date  and  #{startDate,jdbcType=VARCHAR} &gt;= start_date)
+          or (#{endDate,jdbcType=VARCHAR} &lt;= end_date  and  #{endDate,jdbcType=VARCHAR} &gt;= start_date)
+          or (#{startDate,jdbcType=VARCHAR} &lt;= start_date  and  #{endDate,jdbcType=VARCHAR} &gt;= end_date)
+          )
       	<if test="id != null" >
         	and id != #{id,jdbcType=INTEGER}
       	</if>

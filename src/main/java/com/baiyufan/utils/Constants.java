@@ -7,6 +7,7 @@ public class Constants {
 	public final static String NEW = "new";
 	public final static String MOD = "mod";
 	public final static String DEL = "del";
+	public final static String JSON_UTF8="application/json; charset=utf-8";
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////
 	// database fields
 	public final static String VALID_FLAG = "1";
@@ -88,6 +89,9 @@ public class Constants {
 	// match
 	public final static String MATCH_REST_WEBSERVICE_PATH = "match";
 
+	public final static String MATCH_QUERY_REST_WEBSERVICE_PATH = SLASH
+			+ URL_PRIV + SLASH + MATCH_REST_WEBSERVICE_PATH ;
+	
 	public final static String MATCH_NEW_REST_WEBSERVICE_PATH = SLASH
 			+ URL_PRIV + SLASH + MATCH_REST_WEBSERVICE_PATH + SLASH + NEW;
 

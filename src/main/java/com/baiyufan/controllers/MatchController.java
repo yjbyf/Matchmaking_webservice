@@ -1,20 +1,17 @@
 package com.baiyufan.controllers;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.baiyufan.respository.Contract;
-import com.baiyufan.respository.ContractRepository;
-import com.baiyufan.respository.Match;
-import com.baiyufan.respository.MatchRepository;
-import com.baiyufan.respository.Person;
-import com.baiyufan.respository.PersonRepository;
-import com.baiyufan.respository.User;
-import com.baiyufan.respository.UserRepository;
+import com.baiyufan.db.model.TMatch;
+import com.baiyufan.db.persistence.TMatchMapper;
 import com.baiyufan.utils.Constants;
 import com.baiyufan.utils.JSONUtils;
 import com.baiyufan.utils.RequestUtils;
@@ -22,75 +19,69 @@ import com.google.gson.Gson;
 
 @RestController
 public class MatchController {
-	@Autowired
-	private MatchRepository matchRepository;
 
 	@Autowired
-	private UserRepository userRepository;// 用于服务老师
+	private TMatchMapper matchMapper;
 
-	@Autowired
-	private PersonRepository personRepository;// 用于配对双方
-
-	@Autowired
-	private ContractRepository contractRepository; // 用于合同
-
-	// 配对新增入口
-	@RequestMapping(Constants.MATCH_NEW_REST_WEBSERVICE_PATH)
-	public String newMatch(HttpServletRequest request) throws JSONException {
-		doSave(request);
-		return Constants.NULL_STRING;
+	// 配对查询
+	@RequestMapping(value = Constants.MATCH_QUERY_REST_WEBSERVICE_PATH, produces = Constants.JSON_UTF8)
+	public @ResponseBody
+	List<TMatch> getContractList(HttpServletRequest request) {
+		String currentUserId = RequestUtils
+				.getUserIdFromRequestAuthorization(request);
+		TMatch match = new TMatch();
+		match.setCreateBy(new Integer(currentUserId));
+		match.setAliveFlag(Constants.VALID_FLAG);
+		return matchMapper.selectClause(match);
 	}
 
-	private void doSave(HttpServletRequest request) throws JSONException {
+	private TMatch prepareSave(HttpServletRequest request) throws JSONException {
 		JSONUtils json = RequestUtils.getJSONObjectFromRequest(request);// 提交参数的json对象获取
 		if (json != null) {
 			if (json.has("nameId") && json.has("serviceEmployeeId")
 					&& json.has("matchPersonId")) {
-				String nameId = (String) json.get("nameId"); // 拿到其中的person的json字符串
-				String serviceEmployeeId = (String) json
+				Integer nameId = (Integer) json.get("nameId"); // 拿到其中的person的json字符串
+				Integer serviceEmployeeId = (Integer) json
 						.get("serviceEmployeeId");
-				String matchPersonId = (String) json.get("matchPersonId");
-				String nameContractId = (String) json.get("nameContractId");
-				String matchPersonContractId = (String) json
+				Integer matchPersonId = (Integer) json.get("matchPersonId");
+				Integer nameContractId = (Integer) json.get("nameContractId");
+				Integer matchPersonContractId = (Integer) json
 						.get("matchPersonContractId");
 				;
-
-				Person person = personRepository.findOne(nameId); // 根据主键拿到对象
-				Person object = personRepository.findOne(matchPersonId); // 根据主键拿到对象
-				User user = userRepository.findOne(serviceEmployeeId);
-				Contract personContract = contractRepository
-						.findOne(nameContractId);
-				Contract objectContract = contractRepository
-						.findOne(matchPersonContractId);
+				
 
 				// 拿到@dbref的主键
-				Match match = new Gson().fromJson(json.toString(), Match.class);
-				match.setName(person);
-				match.setMatchPerson(object);
-				match.setServiceEmployee(user);
-				match.setNameContract(personContract);
-				match.setMatchPersonContract(objectContract);
-				setUnnecessaryField(match);
-				matchRepository.save(match);
+				TMatch match = new Gson().fromJson(json.toString(), TMatch.class);
+				match.setName(nameId);
+				match.setMatchPerson(matchPersonId);
+				match.setServiceEmployee(serviceEmployeeId);
+				match.setNameContract(nameContractId);
+				match.setMatchPersonContract(matchPersonContractId);
+				match.setAliveFlag(Constants.VALID_FLAG);
+				match.setCreateBy(RequestUtils.getCreatedBy(request));
+				return match;
 			}
 		}
+		return null;
 	}
-
-	private void setUnnecessaryField(Match match) {
-		match.setPk(null);
-		match.setRefGender(null);
-		match.setRefMatchPerson(null);
-		match.setRefName(null);
-		match.setRefServiceEmployee(null);
-		match.setRefNameContractId(null);
-		match.setRefServiceEmployeeId(null);
-		match.setRefMatchPersonContractId(null);
+	
+	// 配对新增入口
+	@RequestMapping(Constants.MATCH_NEW_REST_WEBSERVICE_PATH)
+	public String newMatch(HttpServletRequest request) throws JSONException {
+		TMatch match = prepareSave(request);
+		if(match!=null){
+			return "{\"result\":" + matchMapper.insert(match) + "}";
+		}
+		return Constants.NULL_STRING;
 	}
 
 	// 配对修改入口
 	@RequestMapping(Constants.MATCH_MOD_REST_WEBSERVICE_PATH)
 	public String modMatch(HttpServletRequest request) throws JSONException {
-		doSave(request);
+		TMatch match = prepareSave(request);
+		if(match!=null){
+			return "{\"result\":" + matchMapper.updateByPrimaryKey(match) + "}";
+		}
 		return Constants.NULL_STRING;
 	}
 
@@ -99,11 +90,10 @@ public class MatchController {
 	public String delMatch(HttpServletRequest request) throws JSONException {
 		JSONUtils json = RequestUtils.getJSONObjectFromRequest(request);// 提交参数的json对象获取
 		if (json != null) {
-			Match match = new Gson().fromJson(json.toString(), Match.class);
-			Match toBeDelete = matchRepository.findOne(match.getId());
-			setUnnecessaryField(toBeDelete);
+			TMatch match = new Gson().fromJson(json.toString(), TMatch.class);
+			TMatch toBeDelete = matchMapper.selectByPrimaryKey(match.getId());
 			toBeDelete.setAliveFlag(Constants.INVALID_FLAG);
-			matchRepository.save(toBeDelete);
+			return "{\"result\":" + matchMapper.updateByPrimaryKey(match) + "}";
 		}
 		return Constants.NULL_STRING;
 	}

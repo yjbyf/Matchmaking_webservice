@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baiyufan.db.persistence.TMatchMapper" >
+  <resultMap id="BaseResultMap" type="com.baiyufan.db.model.TMatchExt" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="match_date" property="matchDate" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="INTEGER" />
+    <result column="name_contract" property="nameContract" jdbcType="INTEGER" />
+    <result column="service_employee" property="serviceEmployee" jdbcType="INTEGER" />
+    <result column="match_person" property="matchPerson" jdbcType="INTEGER" />
+    <result column="match_person_contract" property="matchPersonContract" jdbcType="INTEGER" />
+    <result column="visit_result" property="visitResult" jdbcType="VARCHAR" />
+    <result column="visit_remark" property="visitRemark" jdbcType="VARCHAR" />
+    <result column="alive_flag" property="aliveFlag" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    
+    <result column="person_name" property="personName" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="VARCHAR" />
+    <result column="service_employee_name" property="serviceEmployeeName" jdbcType="VARCHAR" />
+    <result column="match_person_name" property="matchPersonName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, match_date, name, name_contract, service_employee, match_person, match_person_contract, 
+    visit_result, visit_remark, alive_flag, create_by,
+    (select name from t_person t where t.id = a.name) as person_name,
+    (select gender from t_person t where t.id = a.name) as gender,
+    (select staff from t_user t where t.id = a.service_employee) as service_employee_name,
+    (select name from t_person t where t.id = a.match_person) as matchPersonName
+  </sql>
+  
+  <select id="selectClause" resultMap="BaseResultMap" parameterType="com.baiyufan.db.model.TMatch" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_match a
+    <where>
+        <if test="aliveFlag != null" >
+        	alive_flag = #{aliveFlag,jdbcType=VARCHAR}
+      	</if>
+      	<if test="createBy != null" >
+        	and create_by = #{createBy,jdbcType=VARCHAR}
+      	</if>
+    </where> 
+  </select>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_match a
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_match
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.baiyufan.db.model.TMatch" >
+    insert into t_match (id, match_date, name, 
+      name_contract, service_employee, match_person, 
+      match_person_contract, visit_result, visit_remark, 
+      alive_flag, create_by
+      )
+    values (#{id,jdbcType=INTEGER}, #{matchDate,jdbcType=VARCHAR}, #{name,jdbcType=INTEGER}, 
+      #{nameContract,jdbcType=INTEGER}, #{serviceEmployee,jdbcType=INTEGER}, #{matchPerson,jdbcType=INTEGER}, 
+      #{matchPersonContract,jdbcType=INTEGER}, #{visitResult,jdbcType=VARCHAR}, #{visitRemark,jdbcType=VARCHAR}, 
+      #{aliveFlag,jdbcType=VARCHAR}, #{createBy,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.baiyufan.db.model.TMatch" >
+    insert into t_match
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="matchDate != null" >
+        match_date,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="nameContract != null" >
+        name_contract,
+      </if>
+      <if test="serviceEmployee != null" >
+        service_employee,
+      </if>
+      <if test="matchPerson != null" >
+        match_person,
+      </if>
+      <if test="matchPersonContract != null" >
+        match_person_contract,
+      </if>
+      <if test="visitResult != null" >
+        visit_result,
+      </if>
+      <if test="visitRemark != null" >
+        visit_remark,
+      </if>
+      <if test="aliveFlag != null" >
+        alive_flag,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="matchDate != null" >
+        #{matchDate,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=INTEGER},
+      </if>
+      <if test="nameContract != null" >
+        #{nameContract,jdbcType=INTEGER},
+      </if>
+      <if test="serviceEmployee != null" >
+        #{serviceEmployee,jdbcType=INTEGER},
+      </if>
+      <if test="matchPerson != null" >
+        #{matchPerson,jdbcType=INTEGER},
+      </if>
+      <if test="matchPersonContract != null" >
+        #{matchPersonContract,jdbcType=INTEGER},
+      </if>
+      <if test="visitResult != null" >
+        #{visitResult,jdbcType=VARCHAR},
+      </if>
+      <if test="visitRemark != null" >
+        #{visitRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="aliveFlag != null" >
+        #{aliveFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.baiyufan.db.model.TMatch" >
+    update t_match
+    <set >
+      <if test="matchDate != null" >
+        match_date = #{matchDate,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=INTEGER},
+      </if>
+      <if test="nameContract != null" >
+        name_contract = #{nameContract,jdbcType=INTEGER},
+      </if>
+      <if test="serviceEmployee != null" >
+        service_employee = #{serviceEmployee,jdbcType=INTEGER},
+      </if>
+      <if test="matchPerson != null" >
+        match_person = #{matchPerson,jdbcType=INTEGER},
+      </if>
+      <if test="matchPersonContract != null" >
+        match_person_contract = #{matchPersonContract,jdbcType=INTEGER},
+      </if>
+      <if test="visitResult != null" >
+        visit_result = #{visitResult,jdbcType=VARCHAR},
+      </if>
+      <if test="visitRemark != null" >
+        visit_remark = #{visitRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="aliveFlag != null" >
+        alive_flag = #{aliveFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.baiyufan.db.model.TMatch" >
+    update t_match
+    set match_date = #{matchDate,jdbcType=VARCHAR},
+      name = #{name,jdbcType=INTEGER},
+      name_contract = #{nameContract,jdbcType=INTEGER},
+      service_employee = #{serviceEmployee,jdbcType=INTEGER},
+      match_person = #{matchPerson,jdbcType=INTEGER},
+      match_person_contract = #{matchPersonContract,jdbcType=INTEGER},
+      visit_result = #{visitResult,jdbcType=VARCHAR},
+      visit_remark = #{visitRemark,jdbcType=VARCHAR},
+      alive_flag = #{aliveFlag,jdbcType=VARCHAR},
+      create_by = #{createBy,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
