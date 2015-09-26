@@ -17,10 +17,11 @@
     <result column="requirement" property="requirement" jdbcType="VARCHAR" />
     <result column="alive_flag" property="aliveFlag" jdbcType="VARCHAR" />
     <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="constellation" property="constellation" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, name, gender, birth_date, height, education, census, company, salary, family, 
-    house, phone, requirement, alive_flag, create_by
+    house, phone, requirement, alive_flag, create_by,constellation
   </sql>
   
   <select id="selectClause" resultMap="BaseResultMap" parameterType="com.baiyufan.db.model.TPerson" >
@@ -64,13 +65,13 @@
   </delete>
   <insert id="insert" parameterType="com.baiyufan.db.model.TPerson" >
     insert into t_person (id, name, gender, 
-      birth_date, height, education, 
+      birth_date,constellation, height, education, 
       census, company, salary, 
       family, house, phone, 
       requirement, alive_flag, create_by
       )
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, 
-      #{birthDate,jdbcType=VARCHAR}, #{height,jdbcType=DECIMAL}, #{education,jdbcType=VARCHAR}, 
+      #{birthDate,jdbcType=VARCHAR},#{constellation,jdbcType=VARCHAR}, #{height,jdbcType=DECIMAL}, #{education,jdbcType=VARCHAR}, 
       #{census,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR}, #{salary,jdbcType=DECIMAL}, 
       #{family,jdbcType=VARCHAR}, #{house,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
       #{requirement,jdbcType=VARCHAR}, #{aliveFlag,jdbcType=VARCHAR}, #{createBy,jdbcType=INTEGER}
@@ -90,6 +91,9 @@
       </if>
       <if test="birthDate != null" >
         birth_date,
+      </if>
+      <if test="constellation != null" >
+        constellation,
       </if>
       <if test="height != null" >
         height,
@@ -138,6 +142,9 @@
       <if test="birthDate != null" >
         #{birthDate,jdbcType=VARCHAR},
       </if>
+      <if test="constellation != null" >
+        #{constellation,jdbcType=VARCHAR},
+      </if>
       <if test="height != null" >
         #{height,jdbcType=DECIMAL},
       </if>
@@ -185,6 +192,9 @@
       <if test="birthDate != null" >
         birth_date = #{birthDate,jdbcType=VARCHAR},
       </if>
+      <if test="constellation != null" >
+        constellation = #{constellation,jdbcType=VARCHAR},
+      </if>
       <if test="height != null" >
         height = #{height,jdbcType=DECIMAL},
       </if>
@@ -226,6 +236,7 @@
     set name = #{name,jdbcType=VARCHAR},
       gender = #{gender,jdbcType=VARCHAR},
       birth_date = #{birthDate,jdbcType=VARCHAR},
+      constellation = #{constellation,jdbcType=VARCHAR},
       height = #{height,jdbcType=DECIMAL},
       education = #{education,jdbcType=VARCHAR},
       census = #{census,jdbcType=VARCHAR},

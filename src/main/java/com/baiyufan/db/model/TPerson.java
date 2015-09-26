@@ -10,6 +10,8 @@ public class TPerson {
     private String gender;
 
     private String birthDate;
+    
+    private String constellation;
 
     private BigDecimal height;
 
@@ -152,4 +154,14 @@ public class TPerson {
     public void setCreateBy(Integer createBy) {
         this.createBy = createBy;
     }
+
+	public String getConstellation() {
+		return constellation;
+	}
+
+	public void setConstellation(String constellation) {
+		this.constellation = constellation;
+	}
+    
+    
 }

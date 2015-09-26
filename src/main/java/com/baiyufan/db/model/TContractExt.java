@@ -5,6 +5,7 @@ public class TContractExt extends TContract {
 	private String gender;
 	private String checkerName;
 	private String matchTimes;
+	private String constellation;
 	
 	public String getName() {
 		return name;
@@ -30,5 +31,13 @@ public class TContractExt extends TContract {
 	}
 	public void setMatchTimes(String matchTimes) {
 		this.matchTimes = matchTimes;
+	}
+	
+	public String getConstellation() {
+		return constellation;
+	}
+
+	public void setConstellation(String constellation) {
+		this.constellation = constellation;
 	}
 }
