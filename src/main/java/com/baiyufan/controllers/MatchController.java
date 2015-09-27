@@ -30,7 +30,9 @@ public class MatchController {
 		String currentUserId = RequestUtils
 				.getUserIdFromRequestAuthorization(request);
 		TMatch match = new TMatch();
-		match.setCreateBy(new Integer(currentUserId));
+		if (!RequestUtils.validAdminNameFromRequestAuthorization(request)) {
+			match.setCreateBy(new Integer(currentUserId));
+		}
 		match.setAliveFlag(Constants.VALID_FLAG);
 		return matchMapper.selectClause(match);
 	}
@@ -48,10 +50,10 @@ public class MatchController {
 				Integer matchPersonContractId = (Integer) json
 						.get("matchPersonContractId");
 				;
-				
 
 				// 拿到@dbref的主键
-				TMatch match = new Gson().fromJson(json.toString(), TMatch.class);
+				TMatch match = new Gson().fromJson(json.toString(),
+						TMatch.class);
 				match.setName(nameId);
 				match.setMatchPerson(matchPersonId);
 				match.setServiceEmployee(serviceEmployeeId);
@@ -64,12 +66,12 @@ public class MatchController {
 		}
 		return null;
 	}
-	
+
 	// 配对新增入口
 	@RequestMapping(Constants.MATCH_NEW_REST_WEBSERVICE_PATH)
 	public String newMatch(HttpServletRequest request) throws JSONException {
 		TMatch match = prepareSave(request);
-		if(match!=null){
+		if (match != null) {
 			return "{\"result\":" + matchMapper.insert(match) + "}";
 		}
 		return Constants.NULL_STRING;
@@ -79,7 +81,7 @@ public class MatchController {
 	@RequestMapping(Constants.MATCH_MOD_REST_WEBSERVICE_PATH)
 	public String modMatch(HttpServletRequest request) throws JSONException {
 		TMatch match = prepareSave(request);
-		if(match!=null){
+		if (match != null) {
 			return "{\"result\":" + matchMapper.updateByPrimaryKey(match) + "}";
 		}
 		return Constants.NULL_STRING;

@@ -15,6 +15,7 @@ import com.baiyufan.db.persistence.TPersonMapper;
 import com.baiyufan.utils.Constants;
 import com.baiyufan.utils.RequestUtils;
 import com.google.gson.Gson;
+
 @RestController
 public class PersonController {
 
@@ -28,7 +29,9 @@ public class PersonController {
 		String currentUserId = RequestUtils
 				.getUserIdFromRequestAuthorization(request);
 		TPerson person = new TPerson();
-		person.setCreateBy(new Integer(currentUserId));
+		if (!RequestUtils.validAdminNameFromRequestAuthorization(request)) {
+			person.setCreateBy(new Integer(currentUserId));
+		}
 		person.setAliveFlag(Constants.VALID_FLAG);
 		return personMapper.selectClause(person);
 	}

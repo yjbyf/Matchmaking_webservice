@@ -39,6 +39,14 @@ public class RequestUtils {
 		return username;
 	}
 
+	public static Boolean validAdminNameFromRequestAuthorization(HttpServletRequest request){
+		if(Constants.ADMIN.equals(getUserNameFromRequestAuthorization(
+			 request) )){
+			return true;
+		}
+		return false;
+	}
+
 	public static String getPasswordFromRequestAuthorization(
 			HttpServletRequest request) {
 		String[] authParts = getStringArrayFromRequestAuthorization(request);
@@ -48,8 +56,9 @@ public class RequestUtils {
 		String password = authParts[1];
 		return password;
 	}
-	
-	public static String getUserIdFromRequestAuthorization(HttpServletRequest request) {
+
+	public static String getUserIdFromRequestAuthorization(
+			HttpServletRequest request) {
 		String[] authParts = getStringArrayFromRequestAuthorization(request);
 		if (authParts == null) {
 			return null;
@@ -57,9 +66,9 @@ public class RequestUtils {
 		String userId = authParts[2];
 		return userId;
 	}
-	
+
 	public static Integer getCreatedBy(HttpServletRequest request) {
-		
+
 		return new Integer(getUserIdFromRequestAuthorization(request));
 	}
 

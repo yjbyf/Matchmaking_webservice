@@ -31,7 +31,9 @@ public class ContractController {
 		String currentUserId = RequestUtils
 				.getUserIdFromRequestAuthorization(request);
 		TContract contract = new TContract();
-		contract.setCreateBy(new Integer(currentUserId));
+		if (!RequestUtils.validAdminNameFromRequestAuthorization(request)) {
+			contract.setCreateBy(new Integer(currentUserId));
+		}
 		contract.setAliveFlag(Constants.VALID_FLAG);
 		return contractMapper.selectClause(contract);
 	}
