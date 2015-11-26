@@ -68,7 +68,7 @@
     insert into t_person (id, name, gender, 
       birth_date,constellation, height, education, 
       census, company, salary, 
-      family, house, phone, married_his
+      family, house, phone, married_his,
       requirement, alive_flag, create_by
       )
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, 
